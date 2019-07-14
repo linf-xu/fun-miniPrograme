@@ -1,0 +1,87 @@
+<!--pages/newActivity.wxml-->
+<h2 class="first">选择模板快速发起</h2>
+<view class='tagList'>
+  
+  <van-tag class="custom-class" size="large" plain type="success">+新增模板</van-tag>
+  
+</view>
+<h2 class="first">手动填写</h2>
+
+<van-cell-group>
+  <van-field
+    value="{{ title }}"
+    name="title"
+    clearable
+    label="活动标题"
+    placeholder="请活动标题(必填)"
+    bindinput="inputgetName" 
+    />
+
+  <van-field
+    value="{{ name }}"
+    name="name"
+    clearable
+    label="活动项目"
+    placeholder="活动项目(必填)"
+    bindinput="inputgetName" 
+    />
+
+  <van-field
+    bindtap='chooseAddress'
+    value="{{ address }}"
+    clearable
+    disabled
+    label="活动地点"
+    icon="location-o"
+    placeholder="点击选择地点(必填)"
+    />
+
+  <van-field
+    value="{{ joinNum }}"
+    name="joinNum"
+    clearable
+    label="建议人数"
+    placeholder="建议人数(必填)"
+    bindinput="inputgetName" 
+    />
+
+  <van-field
+    value="{{ remarks }}"
+    name="remarks"
+    clearable
+    autosize
+    label="备注"
+    placeholder="备注(选填)"
+    bindinput="inputgetName" 
+    />
+  
+  <van-switch-cell
+    title="添加为模板"
+    checked="{{ isTemp }}"
+    bind:change="isTemp"
+    active-color="#07c160"
+  />
+
+  <van-field
+    wx:if="{{isTemp}}"
+    value="{{ tempName }}"
+    name="tempName"
+    clearable
+    label="模板名称"
+    placeholder="模板名称(必填)"
+    bindinput="inputgetName" 
+  />
+</van-cell-group>
+     
+<view class='mt20'>
+  <van-button
+    size="large"
+    :loading="submit" 
+    loading-text="提交中" 
+    plaine type="primary"
+    bindtap='submit'
+  >
+    <i-icon type="add" size="16" color="#fff" />
+    确认发起
+  </van-button>
+</view>

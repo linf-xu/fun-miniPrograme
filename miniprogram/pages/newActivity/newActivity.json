@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "van-dialog": "../../ui/dialog/index",
+    "van-button": "../../ui/button/index",
+    "van-icon": "../../ui/icon/index",
+    "van-field": "../../ui/field/index",
+    "van-cell-group": "../../ui/cell-group/index",
+    "van-tag": "../../ui/tag/index",
+    "van-switch-cell": "../../ui/switch-cell/index",
+    "i-spin": "../../ui/spin/index"
+  }
+}

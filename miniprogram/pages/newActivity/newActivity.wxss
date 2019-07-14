@@ -1,0 +1,22 @@
+/* pages/newActivity.wxss */
+h2{
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(69,90,100,.6);
+  padding: 35px 15px 15px;
+  display: block;
+}
+h2.first{
+  padding-top: 20px
+}
+.tagList{
+  padding: 10px 15px 15px 15px;
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 2;
+}
+.custom-class{
+  margin: 0 10px;
+}
