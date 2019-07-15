@@ -7,6 +7,8 @@
     "van-cell-group": "../../ui/cell-group/index",
     "van-tag": "../../ui/tag/index",
     "van-switch-cell": "../../ui/switch-cell/index",
+    "van-datetime-picker": "../../ui/datetime-picker/index",
+    "van-popup": "../../ui/popup/index",
     "i-spin": "../../ui/spin/index"
   }
 }

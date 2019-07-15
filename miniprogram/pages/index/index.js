@@ -1,5 +1,6 @@
 // miniprogram/pages/guide.js
 import Dialog from '../../ui/dialog/dialog';
+const db = wx.cloud.database()
 Page({
 
   /**
@@ -15,11 +16,63 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.getOpenid()
+    
+  },
+  getData(){
+    
+  },
+  getUserInfo(e){
+    console.log(e)
+    db.collection('user').add({
+      data: Object.assign({
+        creaTime: db.serverDate(),
+        updateTime: db.serverDate()
+      },e.detail.userInfo)
+    })
+  },
+  onD(){
+    Dialog.alert({
+      title: '标题',
+      message: '弹窗内容'
+    }).then(() => {
+      // on close
+      console.log(1)
+    });
+  },
+  //发起新活动
+  goNewActivity(){
+    wx.navigateTo({
+      url: '../newActivity/newActivity',
+    })
+  },
+  // 查看地图
+  viewMap(e){
+    console.log(e)
+    // return
+    let latitude = e.currentTarget.dataset.latitude
+    let longitude = e.currentTarget.dataset.longitude
+    wx.openLocation({
+      latitude,
+      longitude,
+      scale: 18
+    })
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    console.log(getApp().globalData)
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters
     db.collection('activityList').where({
-      _status: 'waiting'
+      isStart: true
     }).get({
       success: res => {
         this.setData({
@@ -36,47 +89,6 @@ Page({
         console.error('[数据库] [查询记录] 失败：', err)
       }
     })
-  },
-  getData(){
-    
-  },
-  getOpenid(){
-    // wx.cloud.callFunction({
-    //   name: 'login',
-    //   complete: res => {
-    //     console.log('云函数获取到的openid: ', res)
-    //     var openid = res.result.openId;
-    //     // that.setData({
-    //     //   openid: openid
-    //     // })
-    //   }
-    // })
-  },
-  getUserInfo(e){
-    console.log(e)
-  },
-  onD(){
-    Dialog.alert({
-      title: '标题',
-      message: '弹窗内容'
-    }).then(() => {
-      // on close
-      console.log(1)
-    });
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**

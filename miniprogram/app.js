@@ -12,7 +12,7 @@ App({
     wx.cloud.callFunction({
       name: 'login',
       complete: res => {
-        console.log('云函数获取到的openid: ', res.result.openId)
+        console.log('云函数获取到的openid: ', res)
         this.globalData.openId = res.result.openId;
         const db = wx.cloud.database()
         db.collection('user').where({
@@ -21,11 +21,13 @@ App({
           success: res => {
             console.log('[数据库] [查询记录] 成功: ', res)
             if(res.data.lenght<1){
-              db.collection('activityList').add({
+              db.collection('user').add({
                 data: {
                   creaTime:db.serverDate()
                 }
               })
+            }else{
+              this.globalData.userInfo = res.data[0]
             }
           },
           fail: err => {

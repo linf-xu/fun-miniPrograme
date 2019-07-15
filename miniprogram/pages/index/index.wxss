@@ -8,3 +8,52 @@ section{
   text-align: center;
   padding: 30rpx 0;
 }
+.cardWraper{
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 630rpx;
+  padding:30rpx;
+  font-size: 14px;
+  margin-bottom: 30rpx;
+  color: #495060;
+}
+.cardHeader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.title{
+  font-size: 16px;
+  color: #1c2438;
+}
+.joins{
+  font-size: 16px;
+  color: #ed3f14;
+}
+.cardContent{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 15rpx 0;
+}
+.wait{
+  /* color: #07c160; */
+  align-self: center;
+}
+.cardBottom{
+  color: #80848f;
+}
+.floatIcon{
+  background: #07c160;
+  color: #fff;
+  position: fixed;
+  right: 30rpx;
+  bottom: 150rpx;
+  height: 150rpx;
+  width: 150rpx;
+  font-size: 50px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 170rpx;
+}

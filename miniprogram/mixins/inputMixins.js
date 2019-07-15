@@ -2,10 +2,6 @@ module.exports = {
 
   inputgetName(e) {
     let name = e.detail.name;
-    console.log(e,)
-    console.log(e.detail.value)
-    console.log(name)
-    // console.log(e.getAttribute("data-name"))
     let nameMap = {}
 
     if (name.indexOf('.')>-1) {

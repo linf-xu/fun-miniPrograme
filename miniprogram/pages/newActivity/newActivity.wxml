@@ -37,6 +37,26 @@
     />
 
   <van-field
+    bindtap='chooseStartTime'
+    value="{{ startTime }}"
+    clearable
+    disabled
+    label="开始时间"
+    icon="clock-o"
+    placeholder="点击选择开始时间(必填)"
+    />
+
+  <van-field
+    bindtap='chooseEndTime'
+    value="{{ endTime }}"
+    clearable
+    disabled
+    label="结束时间"
+    icon="clock-o"
+    placeholder="点击选择结束时间(必填)"
+    />
+
+  <van-field
     value="{{ joinNum }}"
     name="joinNum"
     clearable
@@ -85,3 +105,13 @@
     确认发起
   </van-button>
 </view>
+<van-popup show="{{ showTimePicker }}" position="bottom">
+  <van-datetime-picker
+    type="datetime"
+    value="{{ currentDate }}"
+    min-date="{{ minDate }}"
+    max-date="{{ maxDate }}"
+    bind:confirm="onTimeInput"
+    formatter="{{ formatter }}"
+  />
+</van-popup>

@@ -6,6 +6,10 @@ Page(Object.assign({
    * 页面的初始数据
    */
   data: {
+    avatarUrl:'',
+    nickName:'',
+    realName:'',
+    openid:'',
     title:'',
     name:'',
     address:'',
@@ -14,9 +18,26 @@ Page(Object.assign({
     tempName:'',
     isTemp: false,
     submit:false,
-    status:'wait',
-    start:true,
-    end:false
+    curStatus:'wait',
+    isStart:true,
+    isEnd:false,
+    minDate: new Date().getTime(),
+    maxDate: new Date().getTime()+180*24*60*60*1000,
+    currentDate: new Date().getTime(),
+    showTimePicker:false,
+    startTime:'',
+    endTime:'',
+    timePicker:'start',
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`;
+      } else if (type === 'day') {
+        return `${value}日`;
+      } 
+      return value;
+    }
   },
 
   /**
@@ -36,7 +57,9 @@ Page(Object.assign({
         console.log(res.latitude)
         console.log(res.longitude)
         this.setData({
-          address: res.name
+          address: res.name,
+          latitude: res.latitude,
+          longitude: res.longitude
         })
       },
       fail: function () {
@@ -46,6 +69,36 @@ Page(Object.assign({
         // complete
       }
     })
+  },
+  // 选择开始时间
+  chooseEndTime(){
+    this.setData({
+      showTimePicker:true,
+      timePicker:'end'
+    })
+  },
+  // 选择结束时间
+  chooseStartTime() {
+    this.setData({
+      showTimePicker: true,
+      timePicker: 'start'
+    })
+  },
+  // 获取选择的时间
+  onTimeInput(e){
+    let timestamp4 = new Date(e.detail);
+    let formData = timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8)
+    if(this.data.timePicker=='start'){
+      this.setData({
+        showTimePicker: false,
+        startTime: formData.slice(5, 15)
+      })
+    }else{
+      this.setData({
+        showTimePicker: false,
+        endTime: formData.slice(5, 15)
+      })
+    }
   },
   //是否添加为模板
   isTemp(event){
@@ -70,7 +123,19 @@ Page(Object.assign({
   onAdd() {
     const db = wx.cloud.database()
     db.collection('activityList').add({
-      data: this.data
+        data: Object.assign({
+          createTime: db.serverDate(),
+          updateTime: db.serverDate()
+        },{
+          joins:[
+            {
+              openid: this.data.openid,
+              avatarUrl: this.data.avatarUrl || '',
+              nickName: this.data.nickName || '',
+              realName: this.data.realName || '',
+            }
+          ]
+        },this.data)
     })
       .then(res => {
         wx.showToast({
@@ -102,7 +167,15 @@ Page(Object.assign({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let userInfo = getApp().globalData.userInfo
+    this.setData({
+      openid: userInfo._openid,
+      avatarUrl: userInfo.avatarUrl,
+      nickName: userInfo.nickName,
+      realName: userInfo.realName || ''
+    })
+    console.log(userInfo)
+    console.log(this.data.userInfo)
   },
 
   /**
