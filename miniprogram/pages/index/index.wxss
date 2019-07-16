@@ -12,10 +12,10 @@ section{
   background: #fff;
   border-radius: 5px;
   overflow: hidden;
-  width: 630rpx;
-  padding:30rpx;
+  width: 670rpx;
+  padding:20rpx;
   font-size: 14px;
-  margin-bottom: 30rpx;
+  margin-bottom: 20rpx;
   color: #495060;
 }
 .cardHeader{
@@ -59,13 +59,19 @@ section{
 }
 .joinsList{
   display: flex;
-  margin-top: 30rpx;
+  margin-top: 15rpx;
+  padding-top: 15rpx;
   overflow: hidden;
   white-space:nowrap;
+  align-items: center;
 }
 .avatarWraper{
   overflow: auto;
 } 
+.avatarWraper>view{
+  display: flex;
+  align-items: center;
+}
 .avatar{
   width: 50rpx;
   height: 50rpx;

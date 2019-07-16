@@ -34,16 +34,15 @@
     <view class='joinsList van-hairline--top'>
       <text>已报名:</text>
       <view class='avatarWraper ml15'>
-      <view>
-        <image 
-          wx:for="{{item.joins}}" 
-          wx:key="{{i}}" 
-          wx:for-item="twodata" 
-          class='avatar' 
-          src="{{twodata.avatarUrl}}"/>
-        <image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/>
-        <image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/></view>
-      </view> 
+        <view>
+          <image 
+            wx:for="{{item.joins}}" 
+            wx:key="{{i}}" 
+            wx:for-item="twodata" 
+            class='avatar' 
+            src="{{twodata.avatarUrl}}"/>
+          </view>
+        </view> 
     </view>
   </view>
   
