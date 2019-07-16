@@ -13,8 +13,7 @@
       <view class='contentLeft'>
         <view>活动项目:<text class='ml15'>{{item.name}}</text></view>
         <view bindtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
-          活动地点:
-          <text class='ml15'>{{item.address}}</text>
+          活动地点:<text class='ml15'>{{item.address}}</text>
         </view>
       </view>
       <!-- <view class='contentRight wait' wx:if="{{item.curStatus=='wait'}}">报名</view> -->
@@ -32,7 +31,22 @@
     </view>
     <view>活动时间:<text class='ml15'>{{item.startTime}}至{{item.endTime}}</text></view>
     <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
+    <view class='joinsList van-hairline--top'>
+      <text>已报名:</text>
+      <view class='avatarWraper ml15'>
+      <view>
+        <image 
+          wx:for="{{item.joins}}" 
+          wx:key="{{i}}" 
+          wx:for-item="twodata" 
+          class='avatar' 
+          src="{{twodata.avatarUrl}}"/>
+        <image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/>
+        <image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/><image class='avatar' src="https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEJKqLeX4ZKia6wBLzfGIrUibCdrXK1JhOGYKlkLzOf9C99ApYvAomG3g1ql5nBorG7seRibpMvBGjOcg/132"/></view>
+      </view> 
+    </view>
   </view>
+  
   <!-- 没有进行中的活动 -->
   <view 
     wx:if="{{!pageLoading&&waitingList.length<1}}"

@@ -1,4 +1,5 @@
 /**app.wxss**/
+@import "../../ui/common/index.wxss";
 page{
   background: #f8f8f9
 }

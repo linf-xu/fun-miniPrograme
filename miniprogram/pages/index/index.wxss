@@ -22,6 +22,7 @@ section{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 15rpx;
 }
 .title{
   font-size: 16px;
@@ -35,7 +36,6 @@ section{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 15rpx 0;
 }
 .wait{
   /* color: #07c160; */
@@ -56,4 +56,19 @@ section{
   border-radius: 50%;
   text-align: center;
   line-height: 170rpx;
+}
+.joinsList{
+  display: flex;
+  margin-top: 30rpx;
+  overflow: hidden;
+  white-space:nowrap;
+}
+.avatarWraper{
+  overflow: auto;
+} 
+.avatar{
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
 }
