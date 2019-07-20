@@ -24,12 +24,16 @@
         plain 
         hairline
         type="primary" 
+        bindtap='baoming'
+        data-index='{{index}}'
       >
         立即报名
       </van-button>
       <view class='contentRight going' wx:else>进行中</view>
     </view>
-    <view>活动时间:<text class='ml15'>{{item.startTime}}至{{item.endTime}}</text></view>
+    <view>活动时间:
+      <text class='ml15'>{{item.startTime}}  </text> <van-icon name="exchange"/> {{item.endTime}}
+    </view>
     <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
     <view class='joinsList van-hairline--top'>
       <text>已报名:</text>
@@ -48,7 +52,7 @@
   
   <!-- 没有进行中的活动 -->
   <view 
-    wx:if="{{!pageLoading&&waitingList.length<1}}"
+    wx:if="{{pageLoading&&waitingList.length<4}}"
     class='empty'
     bindTap="addNew"
     >
@@ -59,7 +63,7 @@
   </view>
   <!-- 已结束的活动 -->
   <!-- 发起活动浮窗按钮 -->
-  <van-icon name="plus" bindtap='goNewActivity' class='floatIcon shadow5'/>
+  <van-icon name="plus" wx:if="{{pageLoading&&waitingList.length>3}}"bindtap='goNewActivity' class='floatIcon shadow5'/>
   
   <navigator 
     url="../guide/index" 
