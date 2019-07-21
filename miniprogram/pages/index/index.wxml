@@ -2,7 +2,7 @@
 <view class='container'>
   <i-spin fix size="large" wx:if="{{pageLoading}}"/>
   <!-- 进行中的活动 -->
-  <view wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper shadow5'>
+  <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper shadow5'>
     <view class='cardHeader'>
       <text class='title'>{{item.title}}</text>
       <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
@@ -12,27 +12,27 @@
     <view class='cardContent'>
       <view class='contentLeft'>
         <view>活动项目:<text class='ml15'>{{item.name}}</text></view>
-        <view bindtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
-          活动地点:<text class='ml15'>{{item.address}}</text>
+        <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
+          活动地点:<van-icon color="#6795b5" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
         </view>
       </view>
-      <!-- <view class='contentRight wait' wx:if="{{item.curStatus=='wait'}}">报名</view> -->
       <van-button 
-        wx:if="{{item.curStatus=='wait'}}"
+        wx:if="{{item.curStatus=='wait'&&!item.isJoin}}"
         class='wait' 
         size="small" 
         plain 
         hairline
         type="primary" 
-        bindtap='baoming'
+        catchtap='baoming'
         data-index='{{index}}'
       >
         立即报名
       </van-button>
-      <view class='contentRight going' wx:else>进行中</view>
+      <view class='contentRight going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名<van-icon name="success" /></view>
+      <view class='going' wx:else>进行中<van-icon name="clock-o" /></view>
     </view>
     <view>活动时间:
-      <text class='ml15'>{{item.startTime}}  </text> <van-icon name="exchange"/> {{item.endTime}}
+      <text class='ml15'>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
     </view>
     <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
     <view class='joinsList van-hairline--top'>
@@ -51,19 +51,25 @@
   </view>
   
   <!-- 没有进行中的活动 -->
+  
   <view 
-    wx:if="{{pageLoading&&waitingList.length<4}}"
     class='empty'
-    bindTap="addNew"
     >
-    <text >还没有活动，赶快去 </text>
-    <navigator url="../newActivity/newActivity" open-type="navigate">
-      发起一个吧
-    </navigator>
+    <van-button 
+      size="large" 
+      type="primary" 
+      bind:click="addNew"
+    >
+      <text wx:if="{{!pageLoading&&waitingList.length<1}}">
+        还没有活动，赶快去 
+      </text>
+      发起一个新的活动
+    </van-button>
+    
   </view>
   <!-- 已结束的活动 -->
   <!-- 发起活动浮窗按钮 -->
-  <van-icon name="plus" wx:if="{{pageLoading&&waitingList.length>3}}"bindtap='goNewActivity' class='floatIcon shadow5'/>
+  <van-icon name="plus" wx:if="{{waitingList.length>2}}"bindtap='addNew' class='floatIcon shadow5'/>
   
   <navigator 
     url="../guide/index" 

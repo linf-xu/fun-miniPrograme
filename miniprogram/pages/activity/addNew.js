@@ -1,5 +1,6 @@
 // pages/newActivity.js
 var inputMixins = require("../../mixins/inputMixins.js")
+const db = wx.cloud.database()
 Page(Object.assign({
 
   /**
@@ -28,6 +29,7 @@ Page(Object.assign({
     startTime:'',
     endTime:'',
     timePicker:'start',
+    tempList:[],
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -46,7 +48,26 @@ Page(Object.assign({
   onLoad: function (options) {
 
   },
-
+  init(){
+    let userInfo = getApp().globalData.userInfo
+    this.setData({
+      openid: userInfo._openid,
+      avatarUrl: userInfo.avatarUrl,
+      nickName: userInfo.nickName,
+      realName: userInfo.realName || ''
+    })
+    console.log(userInfo)
+    console.log(this.data.userInfo)
+    // 查询模板列表
+    db.collection('tempList').get({
+      success: res => {
+        this.setData({
+          tempList: res.data,
+        })
+        console.log('[数据库] [查询记录] 成功: ', res)
+      }
+    })
+  },
   // 地图选择
   chooseAddress(){
     wx.chooseLocation({
@@ -121,7 +142,8 @@ Page(Object.assign({
   },
   //新建活动
   onAdd() {
-    const db = wx.cloud.database()
+    
+    //插入activitylist
     db.collection('activityList').add({
         data: Object.assign({
           createTime: db.serverDate(),
@@ -134,16 +156,17 @@ Page(Object.assign({
               nickName: this.data.nickName || '',
               realName: this.data.realName || '',
             }
-          ]
+          ],
+            joinIds: this.data.openid
         },this.data)
     })
       .then(res => {
         wx.showToast({
-          title: '新增记录成功',
+          title: '新建活动成功',
         })
         setTimeout(() => {
-          wx.navigateTo({
-            url: 'page/activity/detail?user_id=111'
+          wx.redirectTo({
+            url: '../activity/detail?id=' + res._id
           })
         }, 2000)
         console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
@@ -154,6 +177,51 @@ Page(Object.assign({
         })
         console.error('[数据库] [新增记录] 失败：', err)
       })
+    // 插入活动记录表
+    db.collection('record')
+      .add({
+        data: {
+          createTime: db.serverDate(),
+          updateTime: db.serverDate(),
+          role: 'playmaker',
+          action: 'create'
+        }
+      })
+    if (this.data.isTemp){
+      // 插入templist
+      try{
+
+      
+      db.collection('tempList')
+        .add({
+          data: {
+            createTime: db.serverDate(),
+            updateTime: db.serverDate(),
+            title: this.data.title,
+            name: this.data.name,
+            address: this.data.address,
+            latitude: this.data.latitude,
+            longitude: this.data.longitude,
+            joinNum: this.data.joinNum,
+            created: this.data._openid,
+            tempName: this.data.tempName
+          }
+          }).then(res => {
+            wx.showToast({
+              title: '新建活动成功',
+            })
+            console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+          }).catch(err => {
+            wx.showToast({
+              icon: 'none',
+              title: '新增记录失败'
+            })
+            console.error('[数据库] [新增记录] 失败：', err)
+          })
+      } catch (e) {
+        console.log(e)
+      }
+    }
   },
 
   /**
@@ -167,15 +235,7 @@ Page(Object.assign({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let userInfo = getApp().globalData.userInfo
-    this.setData({
-      openid: userInfo._openid,
-      avatarUrl: userInfo.avatarUrl,
-      nickName: userInfo.nickName,
-      realName: userInfo.realName || ''
-    })
-    console.log(userInfo)
-    console.log(this.data.userInfo)
+    this.init()
   },
 
   /**

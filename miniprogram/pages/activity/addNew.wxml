@@ -1,8 +1,15 @@
 <!--pages/newActivity.wxml-->
 <h2 class="first">选择模板快速发起</h2>
 <view class='tagList'>
-  
-  <van-tag class="custom-class" size="large" plain type="success">+新增模板</van-tag>
+  <van-tag wx:for="{{tempList}}" 
+  wx:key="{{index}}" 
+  bind:click="useTemp" 
+  data-index="{{index}}"
+  class="custom-class" 
+  size="large" 
+  plain 
+  type="success">{{item.tempName}}</van-tag>
+  <van-tag class="custom-class" bind:click="addTemp" size="large" plain type="success">+新增模板</van-tag>
   
 </view>
 <h2 class="first">手动填写</h2>
@@ -32,7 +39,7 @@
     clearable
     disabled
     label="活动地点"
-    icon="location-o"
+    icon="{{ address ? 'location' :'location-o' }}"
     placeholder="点击选择地点(必填)"
     />
 
@@ -42,7 +49,7 @@
     clearable
     disabled
     label="开始时间"
-    icon="clock-o"
+    icon="{{ startTime ? 'clock' : 'clock-o' }}"
     placeholder="点击选择开始时间(必填)"
     />
 
@@ -52,7 +59,7 @@
     clearable
     disabled
     label="结束时间"
-    icon="clock-o"
+    icon="{{ endTime ? 'clock' : 'clock-o' }}"
     placeholder="点击选择结束时间(必填)"
     />
 

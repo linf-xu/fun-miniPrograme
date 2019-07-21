@@ -102,5 +102,9 @@ App({
         }
       })
     }
+  },
+  // 集合activityList操作
+  activityList(){
+
   }
 })

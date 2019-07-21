@@ -1,0 +1,69 @@
+<!--pages/activity/detail.wxml-->
+<i-spin fix size="large" wx:if="{{pageLoading}}"/>
+<van-cell-group border="{{false}}">
+  <view class='header'>
+    <view>
+      发起人：<image src='{{playmaker.avatarUrl}}'/>{{playmaker.nickName}}
+    </view> 
+    <view>
+      <text wx:if="{{isPlaymaker&&!edit}}" bindtap='edit' class='edit'>编辑</text>
+      <text wx:if="{{isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消</text>
+      <text wx:if="{{isPlaymaker&&edit}}" bindtap='edited' class='edit'>完成</text>
+    </view>
+  </view>
+</van-cell-group>
+
+<van-cell-group border="{{false}}">
+  <van-cell title="活动标题" value="{{acInfo.title}}" />
+  <van-cell title="活动项目" value="{{acInfo.name}}" />
+  <van-cell title="活动地点" 
+    value="{{acInfo.address}}" 
+    isLink
+    data-latitude='{{acInfo.latitude}}' 
+    data-longitude='{{acInfo.longitude}}'
+    />
+  <van-cell title="活动时间" value="{{time}}" custom-class="list" value-class="right"/>
+  <van-cell wx:if="{{!edit}}" title="备注" value="{{acInfo.remarks||'空'}}" />
+  <van-field
+    wx:if="{{edit}}"
+    value="{{ acInfo.remarks }}"
+    name="remarks"
+    clearable
+    autosize
+    focus
+    label="备注"
+    disabled="{{!edit}}"
+    placeholder="备注(选填)"
+    bindinput="inputgetName" 
+    />
+</van-cell-group>
+
+<van-cell-group border="{{false}}">
+  <van-button 
+    wx:if="{{!isJoin}}"
+    class='mt30'
+    size="large" 
+    type="primary" 
+    bind:click="action"
+  >
+    立即报名
+  </van-button>
+</van-cell-group>
+
+<van-cell-group border="{{false}}">
+<view class='imgwrap'>
+  <!-- <view class='plusWrap'> -->
+    <image class='plusimg img' bindtap='uploadImg' src='../../../../../images/camera.png'></image>
+  <!-- </view> -->
+  <image 
+    wx:for="{{imgList}}"
+    wx:key="{{index}}"
+    class='img'
+    mode="aspectFit"
+    bindload="imageLoad" data-index="{{ index }}" 
+style="width:{{ images[index].width }}rpx; height:{{ images[index].height }}rpx;"
+    src='{{item}}'/>
+</view>
+</van-cell-group>
+
+

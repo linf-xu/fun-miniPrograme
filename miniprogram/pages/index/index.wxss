@@ -4,16 +4,17 @@ section{
   width: 100%;
 }
 .empty{
-  color: #80848f;
+  color: #fff;
   text-align: center;
+  width: 100%;
   padding: 30rpx 0;
 }
 .cardWraper{
   background: #fff;
   border-radius: 5px;
   overflow: hidden;
-  width: 670rpx;
-  padding:20rpx;
+  width: 620rpx;
+  padding:30rpx 30rpx 20rpx 30rpx;
   font-size: 14px;
   margin-bottom: 20rpx;
   color: #495060;
@@ -36,26 +37,31 @@ section{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 .wait{
   /* color: #07c160; */
   align-self: center;
 }
+.address{
+  color: #6795b5
+}
 .cardBottom{
   color: #80848f;
 }
+
 .floatIcon{
   background: #07c160;
   color: #fff;
   position: fixed;
-  right: 30rpx;
+  right: 5rpx;
   bottom: 150rpx;
-  height: 150rpx;
-  width: 150rpx;
-  font-size: 50px;
+  height: 120rpx;
+  width: 120rpx;
+  font-size: 40px;
   border-radius: 50%;
   text-align: center;
-  line-height: 170rpx;
+  line-height: 140rpx;
 }
 .joinsList{
   display: flex;
@@ -69,12 +75,19 @@ section{
   overflow: auto;
 } 
 .avatarWraper>view{
-  display: flex;
-  align-items: center;
+  white-space:nowrap;
+  padding-top: 10rpx;
 }
 .avatar{
   width: 50rpx;
   height: 50rpx;
   border-radius: 50%;
   margin-right: 10rpx;
+  align-items: center;
+}
+.going{
+  color: #f44
+}
+.ready{
+  color: #07c160
 }
