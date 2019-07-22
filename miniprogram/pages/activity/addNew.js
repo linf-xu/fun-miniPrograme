@@ -155,9 +155,11 @@ Page(Object.assign({
               avatarUrl: this.data.avatarUrl || '',
               nickName: this.data.nickName || '',
               realName: this.data.realName || '',
+              updateTime: db.serverDate()
             }
           ],
-            joinIds: this.data.openid
+            joinIds: this.data.openid,
+            imgList:[]
         },this.data)
     })
       .then(res => {
@@ -222,6 +224,30 @@ Page(Object.assign({
         console.log(e)
       }
     }
+  },
+  // 使用模板
+  useTemp(e){
+    let temp = this.data.tempList[e.currentTarget.dataset.index]
+    this.setData({
+      title: temp.title,
+      name: temp.name,
+      address: temp.address,
+      latitude: temp.latitude,
+      longitude: temp.longitude,
+      joinNum: temp.joinNum,
+      isTemp: false,
+      tempName: ''
+    })
+  },
+  // 新建模板
+  addTemp(){
+    console.log('addtemp')
+    wx.showToast({
+      icon: 'none',
+      title: '填写下方活动信息，选择添加为模板即可',
+      duration: 2000
+    })
+    this.setData({isTemp:true})
   },
 
   /**

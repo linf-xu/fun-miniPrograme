@@ -30,6 +30,7 @@ Page({
   getData(){
     
   },
+  
   init(){
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters

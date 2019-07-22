@@ -3,13 +3,13 @@
 <view class='tagList'>
   <van-tag wx:for="{{tempList}}" 
   wx:key="{{index}}" 
-  bind:click="useTemp" 
+  bindtap="useTemp" 
   data-index="{{index}}"
   class="custom-class" 
   size="large" 
   plain 
   type="success">{{item.tempName}}</van-tag>
-  <van-tag class="custom-class" bind:click="addTemp" size="large" plain type="success">+新增模板</van-tag>
+  <van-tag class="custom-class" bindtap="addTemp" size="large" plain type="success">+新增模板</van-tag>
   
 </view>
 <h2 class="first">手动填写</h2>

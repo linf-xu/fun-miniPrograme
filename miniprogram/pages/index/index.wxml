@@ -13,7 +13,7 @@
       <view class='contentLeft'>
         <view>活动项目:<text class='ml15'>{{item.name}}</text></view>
         <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
-          活动地点:<van-icon color="#6795b5" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
+          活动地点:<van-icon color="#576b95" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
         </view>
       </view>
       <van-button 

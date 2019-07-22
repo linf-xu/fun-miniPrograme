@@ -15,7 +15,8 @@ Page(Object.assign({
     playmaker:"",
     isJoin:false,
     imgList:[],
-    imgstyles:[]
+    imgstyles:[],
+    collapse:''
   },
 
   /**
@@ -303,6 +304,18 @@ Page(Object.assign({
     this.setData({
       images: image
     })
+  },
+  previewImg(e) {
+    let index = e.currentTarget.dataset.index
+    wx.previewImage({
+      current: this.data.imgList[index], // 当前显示图片的http链接
+      urls: this.data.imgList // 需要预览的图片http链接列表
+    })
+  },
+  onChange(event) {
+    this.setData({
+      collapse: event.detail
+    });
   },
 
   /**

@@ -1,4 +1,5 @@
 <!--pages/activity/detail.wxml-->
+<wxs module="dateFr" src="../../filter/date.wxs"></wxs>
 <i-spin fix size="large" wx:if="{{pageLoading}}"/>
 <van-cell-group border="{{false}}">
   <view class='header'>
@@ -7,7 +8,7 @@
     </view> 
     <view>
       <text wx:if="{{isPlaymaker&&!edit}}" bindtap='edit' class='edit'>编辑</text>
-      <text wx:if="{{isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消</text>
+      <text wx:if="{{isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消{{isPlaymaker?'活动':'报名'}}</text>
       <text wx:if="{{isPlaymaker&&edit}}" bindtap='edited' class='edit'>完成</text>
     </view>
   </view>
@@ -38,9 +39,8 @@
     />
 </van-cell-group>
 
-<van-cell-group border="{{false}}">
+<van-cell-group wx:if="{{!isJoin}}" border="{{false}}">
   <van-button 
-    wx:if="{{!isJoin}}"
     class='mt30'
     size="large" 
     type="primary" 
@@ -48,6 +48,23 @@
   >
     立即报名
   </van-button>
+</van-cell-group>
+
+<van-cell-group border="{{false}}">
+  <!-- <van-collapse value="{{'已报名-'+acInfo.joins.length+'/'+acInfo.joinNum}}" bind:change="onChange"> -->
+  <van-collapse value="{{collapse}}" bind:change="onChange">
+    <van-collapse-item name="1" title="已报名">
+      <text slot="value">{{acInfo.joins.length+'/'+acInfo.joinNum}}</text>
+      <view  wx:for="{{acInfo.joins}}" wx:key="{{index}}">
+       <view class='left'>
+        <image class='ava' src='{{item.avatarUrl}}'></image>
+        {{item.nickName}}
+        <text wx:if="{{item.realName}}">{{'('+item.realName+')'}}</text>
+       </view> 
+       <text>{{dateFr.getDate(item.updateTime,'-')}}</text>
+      </view>
+    </van-collapse-item>
+  </van-collapse>
 </van-cell-group>
 
 <van-cell-group border="{{false}}">
@@ -60,6 +77,7 @@
     wx:key="{{index}}"
     class='img'
     mode="aspectFit"
+    bindtap='previewImg'
     bindload="imageLoad" data-index="{{ index }}" 
 style="width:{{ images[index].width }}rpx; height:{{ images[index].height }}rpx;"
     src='{{item}}'/>

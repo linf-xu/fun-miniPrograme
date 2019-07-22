@@ -44,7 +44,7 @@ section{
   align-self: center;
 }
 .address{
-  color: #6795b5
+  color: #576b95
 }
 .cardBottom{
   color: #80848f;

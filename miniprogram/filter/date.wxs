@@ -1,0 +1,35 @@
+var DateFr = {
+
+  getDate: function (time, splitStr) {
+    console.log(time)
+
+    if (!time) return '';
+
+    var date =getDate(time);
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate(); 
+    var h = date.getHours(); 
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (h < 10) h = "0" + h; 
+    if (m < 10) m = "0" + m; 
+    if (s < 10) s = "0" + s;
+
+    if (splitStr)
+      return y+'-'+M+'-'+d+' '+h+':'+m+':'+s;
+    else
+      return {
+        y: y,
+        M: M,
+        d: d
+      };
+  }
+}
+
+module.exports = {
+  getDate: DateFr.getDate
+}

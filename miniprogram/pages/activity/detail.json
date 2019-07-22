@@ -4,6 +4,8 @@
     "van-cell-group": "../../ui/cell-group/index",
     "van-field": "../../ui/field/index",
     "van-button": "../../ui/button/index",
+    "van-collapse": "../../ui/collapse/index",
+    "van-collapse-item": "../../ui/collapse-item/index",
     "van-icon": "../../ui/icon/index",
     "i-spin": "../../ui/spin/index"
   }

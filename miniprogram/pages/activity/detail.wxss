@@ -38,8 +38,6 @@
   overflow: auto;
   padding: 20rpx 0;
   background: #fff;
-  vertical-align: middle;
-  text-align: center;
 }
 .img{
   margin-right: 15rpx;
@@ -58,4 +56,9 @@
   height: 100rpx;
   background: #fff;
   padding: 50rpx;
+}
+.ava{
+  height: 50rpx;
+  width: 50rpx;
+  border-radius: 10rpx;
 }
