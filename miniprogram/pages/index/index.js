@@ -38,15 +38,15 @@ Page({
       isStart: true
     }).get({
       success: res => {
-        console.log(res.data)
+        // console.log(res.data)
         let waitingList = res.data
         waitingList.map(item => {
-          console.log(item.joinIds.indexOf(app.globalData.userInfo._openid))
+          // console.log(item.joinIds.indexOf(app.globalData.userInfo._openid))
           if (item.joinIds.indexOf(app.globalData.userInfo._openid)>-1){
             item.isJoin = true
           }
         })
-        console.log(waitingList)
+        // console.log(waitingList)
         this.setData({
           waitingList,
           pageLoading: false
@@ -156,8 +156,6 @@ Page({
   },
   // 查看详情
   goDetail(e){
-    console.log(e)
-    console.log(e.currentTarget.dataset.id)
     wx.navigateTo({
       url: '../activity/detail?id='+e.currentTarget.dataset.id
     })

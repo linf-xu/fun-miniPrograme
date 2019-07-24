@@ -28,7 +28,7 @@
   <van-field
     wx:if="{{edit}}"
     value="{{ acInfo.remarks }}"
-    name="remarks"
+    name="acInfo.remarks"
     clearable
     autosize
     focus
@@ -39,14 +39,24 @@
     />
 </van-cell-group>
 
-<van-cell-group wx:if="{{!isJoin}}" border="{{false}}">
+<van-cell-group  border="{{false}}">
   <van-button 
+    wx:if="{{!isJoin}}"
     class='mt30'
     size="large" 
     type="primary" 
     bind:click="action"
   >
     立即报名
+  </van-button>
+  <van-button 
+    wx:if="{{isJoin}}"
+    class='mt30'
+    size="large" 
+    type="primary" 
+    open-type="share"
+  >
+    邀请朋友参加
   </van-button>
 </van-cell-group>
 
@@ -55,7 +65,7 @@
   <van-collapse value="{{collapse}}" bind:change="onChange">
     <van-collapse-item name="1" title="已报名">
       <text slot="value">{{acInfo.joins.length+'/'+acInfo.joinNum}}</text>
-      <view  wx:for="{{acInfo.joins}}" wx:key="{{index}}">
+      <view class='joinsList' wx:for="{{acInfo.joins}}" wx:key="{{index}}">
        <view class='left'>
         <image class='ava' src='{{item.avatarUrl}}'></image>
         {{item.nickName}}
@@ -83,5 +93,6 @@ style="width:{{ images[index].width }}rpx; height:{{ images[index].height }}rpx;
     src='{{item}}'/>
 </view>
 </van-cell-group>
+<!-- <button open-type="share">转发</button> -->
 
 

@@ -71,7 +71,7 @@
   <!-- 发起活动浮窗按钮 -->
   <van-icon name="plus" wx:if="{{waitingList.length>2}}"bindtap='addNew' class='floatIcon shadow5'/>
   
-  <navigator 
+  <!-- <navigator 
     url="../guide/index" 
     hover-class="navigator-hover">
     跳转到新页面
@@ -80,7 +80,7 @@
     open-type="getUserInfo" 
     bindgetuserinfo="getUserInfo"> 
     获取头像昵称 
-  </button>
+  </button> -->
 </view>
     
 

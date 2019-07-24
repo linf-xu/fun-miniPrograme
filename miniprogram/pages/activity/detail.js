@@ -46,7 +46,6 @@ Page(Object.assign({
     if (this.data.id) this.init()
   },
   init(){
-    const db = wx.cloud.database()
     // 查询当前用户所有的 counters
     db.collection('activityList').where({
       _id: this.data.id
@@ -100,7 +99,6 @@ Page(Object.assign({
   },
   // 编辑完成
   edited() {
-    const db = wx.cloud.database()
     db.collection('activityList')
       .doc(this.data.id)
       .update({
@@ -131,32 +129,63 @@ Page(Object.assign({
       scale: 18
     })
   },
-  // 取消活动
-  cancelClick(){
+  // 取消按钮点击
+  cancel(){
+    let that = this
+    if (this.data.isPlaymaker) {
+      wx.showModal({
+        title: '提示',
+        content: '确定取消本次活动吗',
+        success(res) {
+          if (res.confirm) {
+            that.cancelAc()
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+      return
+    }
     wx.showModal({
       title: '提示',
-      content: '确定取消本次活动吗',
+      content: '确定取消报名吗',
       success(res) {
         if (res.confirm) {
-          this.cancelBaoming()
+          that.cancelBaoming()
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
       }
     })
+    
   },
+  // 取消活动
   cancelAc(){
-
+    this.update({
+      curStatus: 'cancel',
+      isStart: false 
+    })
+      .then(() => {
+        wx.showToast({
+          title: '活动取消成功',
+          icon: 'success',
+          duration: 2000
+        })
+        wx.redirectTo({
+          url: '/pages/index/index'
+        })
+      })
   },
   // 主按钮  报名/取消报名
   action(){
+    let that = this
     if(this.data.isJoin){
       wx.showModal({
         title: '提示',
         content: '确定取消报名吗',
         success(res) {
           if (res.confirm) {
-            this.cancelBaoming()
+            that.cancelBaoming()
           } else if (res.cancel) {
             console.log('用户点击取消')
           }
@@ -168,6 +197,20 @@ Page(Object.assign({
   }, 
   cancelBaoming(){
     console.log('cancel')
+    let joins = this.data.acInfo.joins
+    let joinidsArr = this.data.acInfo.joinIds.split(',')
+    let index = joinidsArr.findIndex(item => { item == app.globalData.userInfo._openid})
+    joins.splice(index, 1)
+    joinidsArr.splice(index, 1)
+    let joinIds = joinidsArr.join(',')
+    this.update({ joins, joinIds }).then(() => {
+      this.init()
+      wx.showToast({
+        title: '取消报名成功',
+        icon: 'success',
+        duration: 2000
+      })
+    })
   },
   // 报名
   baoming() {
@@ -184,29 +227,12 @@ Page(Object.assign({
     //更新活动list表
     let joins = this.data.acInfo.joins
     joins.push({
-      openid: this.data.userInfo._openid,
+      openid: app.globalData.userInfo._openid,
       avatarUrl: this.data.userInfo.avatarUrl,
       nickName: this.data.userInfo.nickName,
       realName: this.data.userInfo.realName
     })
-    let joinIds = this.data.acInfo.joinIds + ',' + this.data.userInfo._openid
-    // db.collection('activityList')
-    //   .doc(this.data.id)
-    //   .update({
-    //     data: {
-    //       joins,
-    //       joinIds,
-    //       updateTime: db.serverDate(),
-    //     }
-    //   })
-    //   .then(() => {
-    //     this.init()
-    //     wx.showToast({
-    //       title: '报名成功',
-    //       icon: 'success',
-    //       duration: 2000
-    //     })
-    //   })
+    let joinIds = this.data.acInfo.joinIds + ',' + app.globalData.userInfo._openid
     this.update({ joins, joinIds}).then(()=>{
       this.init()
       wx.showToast({
@@ -349,7 +375,14 @@ Page(Object.assign({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
+  onShareAppMessage: function (res) {
+    console.log(res)
+    let title = '我已经报名了，快来参加吧'
+    if(this.data.isPlaymaker){
+      title = '我发起了新活动，快来参加吧'
+    }
+    return {
+      title: title
+    }
   }
 }, inputMixins))

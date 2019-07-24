@@ -1,5 +1,6 @@
 // pages/newActivity.js
 var inputMixins = require("../../mixins/inputMixins.js")
+
 const db = wx.cloud.database()
 Page(Object.assign({
 
@@ -56,8 +57,6 @@ Page(Object.assign({
       nickName: userInfo.nickName,
       realName: userInfo.realName || ''
     })
-    console.log(userInfo)
-    console.log(this.data.userInfo)
     // 查询模板列表
     db.collection('tempList').get({
       success: res => {
@@ -73,18 +72,19 @@ Page(Object.assign({
     wx.chooseLocation({
       success: (res)=> {
         // success
-        console.log(res, "location")
-        console.log(res.name)
-        console.log(res.latitude)
-        console.log(res.longitude)
+        // console.log(res, "location")
+        // console.log(res.name)
+        // console.log(res.latitude)
+        // console.log(res.longitude)
         this.setData({
           address: res.name,
           latitude: res.latitude,
           longitude: res.longitude
         })
       },
-      fail: function () {
+      fail: function (e) {
         // fail
+        console.log(e)
       },
       complete: function () {
         // complete
@@ -107,12 +107,12 @@ Page(Object.assign({
   },
   // 获取选择的时间
   onTimeInput(e){
-    let timestamp4 = new Date(e.detail);
-    let formData = timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8)
+    let formData = this.formDate(e.detail);
+    console.log(formData)
     if(this.data.timePicker=='start'){
       this.setData({
         showTimePicker: false,
-        startTime: formData.slice(5, 15)
+        startTime: formData.slice(5, 16)
       })
     }else{
       this.setData({

@@ -61,4 +61,14 @@
   height: 50rpx;
   width: 50rpx;
   border-radius: 10rpx;
+  margin-right: 15rpx;
+}
+.joinsList{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.joinsList .left{
+  display: flex;
+  align-items: center;
 }

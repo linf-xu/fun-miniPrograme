@@ -31,6 +31,25 @@ module.exports = {
 
     this.setData(nameMap)
 
-  }
+  },
+  formDate(time){
+    console.log(time)
 
+    if (!time) return '';
+
+    var date = new Date(time);
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (h < 10) h = "0" + h;
+    if (m < 10) m = "0" + m;
+    if (s < 10) s = "0" + s;
+    return y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+  }
 }
