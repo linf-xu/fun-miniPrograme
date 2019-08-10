@@ -16,15 +16,17 @@ Page(Object.assign({
     isJoin:false,
     imgList:[],
     imgstyles:[],
-    collapse:''
+    collapse:'',
+    nickName: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
-    console.log(app.globalData.openid)
+    app.$watch('userInfo', (val, old) => {
+      this.init()
+    })
     this.setData({ 
       id: options.id
     })
@@ -46,6 +48,10 @@ Page(Object.assign({
     if (this.data.id) this.init()
   },
   init(){
+    this.setData({
+      nickName: app.globalData.userInfo.nickName
+    })
+    console.log('globalData',app.globalData)
     // 查询当前用户所有的 counters
     db.collection('activityList').where({
       _id: this.data.id
@@ -176,8 +182,18 @@ Page(Object.assign({
         })
       })
   },
+  getUserInfo(res) {
+    app.updateUserInfo(res)
+  },
   // 主按钮  报名/取消报名
   action(){
+    if (!app.globalData.userInfo.nickName) {
+      wx.showToast({
+        icon: 'none',
+        title: '您还未登陆，请点击页面最上方登录'
+      })
+      return
+    }
     let that = this
     if(this.data.isJoin){
       wx.showModal({
@@ -297,21 +313,37 @@ Page(Object.assign({
   update(obj){
     console.log(obj)
     return new Promise((rev,rej)=>{
-      db.collection('activityList')
-        .doc(this.data.id)
-        .update({
-          data: Object.assign({
-            updateTime: db.serverDate(),
-          }, obj)
-        })
-        .then((e) => {
-          console.log(e)
+      let _data = {
+        id: this.data.id,
+        data: Object.assign({
+          updateTime: db.serverDate(),
+        }, obj)
+      }
+      wx.cloud.callFunction({
+        // 云函数名称
+        name: 'updateActive',
+        // 传给云函数的参数
+        data: _data,
+        success(res) {
           rev()
-        })
-        .catch(e => {
-          console.warn(e)
-          rej()
-        })
+        },
+        fail: console.error
+      })
+      // db.collection('activityList')
+      //   .doc(this.data.id)
+      //   .update({
+      //     data: Object.assign({
+      //       updateTime: db.serverDate(),
+      //     }, obj)
+      //   })
+      //   .then((e) => {
+      //     console.log(e)
+      //     rev()
+      //   })
+      //   .catch(e => {
+      //     console.warn(e)
+      //     rej()
+      //   })
     })
     
   },

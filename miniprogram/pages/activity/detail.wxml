@@ -1,14 +1,31 @@
 <!--pages/activity/detail.wxml-->
 <wxs module="dateFr" src="../../filter/date.wxs"></wxs>
+
 <i-spin fix size="large" wx:if="{{pageLoading}}"/>
 <van-cell-group border="{{false}}">
+  <!-- <view wx:if="{{nickName}}" class="loginBox">
+    <text>您还未登录，请先</text>
+    <button 
+      class="login"
+      open-type="getUserInfo" 
+      bindgetuserinfo="getUserInfo"> 
+      登录 
+    </button>
+  </view> -->
   <view class='header'>
     <view>
       发起人：<image src='{{playmaker.avatarUrl}}'/>{{playmaker.nickName}}
     </view> 
     <view>
+      <button 
+        wx:if="{{!nickName}}"
+        class="login"
+        open-type="getUserInfo" 
+        bindgetuserinfo="getUserInfo"> 
+        登录 
+      </button>
       <text wx:if="{{isPlaymaker&&!edit}}" bindtap='edit' class='edit'>编辑</text>
-      <text wx:if="{{isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消{{isPlaymaker?'活动':'报名'}}</text>
+      <text wx:if="{{!isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消{{isPlaymaker?'活动':'报名'}}</text>
       <text wx:if="{{isPlaymaker&&edit}}" bindtap='edited' class='edit'>完成</text>
     </view>
   </view>

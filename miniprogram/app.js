@@ -2,6 +2,7 @@
 
 App({
   onLaunch: function (options) {
+    console.log('onlaunch')
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -19,44 +20,32 @@ App({
       complete: res => {
         console.log('云函数获取到的openid: ', res.result)
         this.setGlobalData({ openid: res.result.openid })
+        this.setGlobalData({ userInfo: { _openid: res.result.openid} })
         this.updateUserInfo()
       }
     })
-    
-    
   },
-  getUserInfo(){
-    console.log('getUserInfo')
-    return new Promise((rev,rej) => {
-      wx.getUserInfo({
-        success: (res) => {
-          console.log(res);
-          rev()
-          this.setGlobalData(res.userInfo)
-        }
-      })
-    })
-  },
-  updateUserInfo(){
+  updateUserInfo(userInfo){
+    if (userInfo) console.log(JSON.parse(userInfo.detail.rawData))
     const db = wx.cloud.database()
     db.collection('user').where({
       _openid: this.globalData.openid
     }).get({
       success: res => {
         console.log('[数据库] [查询记录] 成功: ', res)
-        if (res.data.lenght < 1) {
-          //用户未注册到数据库，获取用户授权并记录到数据库中
-          this.getUserInfo().then(()=>{
-            db.collection('user').add(
-              Object.assign({
-                createTime: db.serverDate(),
-                updateTime: db.serverDate()
-              },this.globalData.userInfo)
-            )
-          })
-        } else {
-          console.log('getuserinfo')
+        if (res.data.length > 0){
+          console.log('getuserinfo from db')
           this.setGlobalData({ userInfo: res.data[0] })
+          return
+        }
+        if (userInfo) {
+          //用户未注册到数据库，获取用户授权并记录到数据库中
+          db.collection('user').add(
+            Object.assign({
+              createTime: db.serverDate(),
+              updateTime: db.serverDate()
+            }, JSON.parse(userInfo.detail.rawData))
+          )
         }
       },
       fail: err => {

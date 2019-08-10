@@ -1,6 +1,6 @@
 // pages/newActivity.js
 var inputMixins = require("../../mixins/inputMixins.js")
-
+var app = getApp()
 const db = wx.cloud.database()
 Page(Object.assign({
 
@@ -50,7 +50,8 @@ Page(Object.assign({
 
   },
   init(){
-    let userInfo = getApp().globalData.userInfo
+    let userInfo = app.globalData.userInfo
+    console.log(app.globalData)
     this.setData({
       openid: userInfo._openid,
       avatarUrl: userInfo.avatarUrl,
@@ -117,7 +118,7 @@ Page(Object.assign({
     }else{
       this.setData({
         showTimePicker: false,
-        endTime: formData.slice(5, 15)
+        endTime: formData.slice(5, 16)
       })
     }
   },

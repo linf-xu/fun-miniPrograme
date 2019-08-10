@@ -12,32 +12,34 @@ Page({
     waitingList:[],
     endList: [],
     pageLoading: true,
+    nickName:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let that = this;
     app.$watch('userInfo', (val, old) => {
-      console.log(val,old)
-      this.setData({
-        userInfo: val
-      })
       this.init()
     })
   },
   getData(){
     
   },
-  
+  getUserInfo(res){
+    app.updateUserInfo(res)
+  },
   init(){
+    this.setData({
+      nickName: app.globalData.userInfo.nickName
+    })
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters
     db.collection('activityList').orderBy('updateTime', 'desc').where({
       isStart: true
     }).get({
       success: res => {
+        console.log(app.globalData.userInfo._openid)
         // console.log(res.data)
         let waitingList = res.data
         waitingList.map(item => {
@@ -65,15 +67,6 @@ Page({
       }
     })
   },
-  // getUserInfo(e){
-  //   console.log(e)
-  //   db.collection('user').add({
-  //     data: Object.assign({
-  //       creaTime: db.serverDate(),
-  //       updateTime: db.serverDate()
-  //     },e.detail.userInfo)
-  //   })
-  // },
   onD(){
     Dialog.alert({
       title: '标题',
@@ -98,9 +91,10 @@ Page({
   // 报名
   baoming(e){
     console.log(e)
-    if(!app.globalData.userInfo){
-      app.getUserInfo().then(()=>{
-        this.upadteBaomingDb(e.currentTarget.dataset.index)
+    if(!app.globalData.userInfo.nickName){
+      wx.showToast({
+        icon: 'none',
+        title: '您还未登陆，请点击页面最上方登录'
       })
       return
     }
@@ -116,24 +110,33 @@ Page({
       nickName: app.globalData.userInfo.nickName,
       realName: app.globalData.userInfo._realName
     })
+    console.log(app.globalData.userInfo)
     let joinIds = this.data.waitingList[index].joinIds + ',' + app.globalData.userInfo._openid
-    db.collection('activityList')
-      .doc(this.data.waitingList[index]._id)
-      .update({
-        data: {
-          joins,
-          joinIds,
-          updateTime: db.serverDate(),
-        }
-      })
-      .then(()=>{
-        this.init()
+    let _data = {
+      id: this.data.waitingList[index]._id,
+      data: {
+        joins,
+        joinIds,
+        updateTime: db.serverDate(),
+      }
+    }
+    let _this = this
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'updateActive',
+      // 传给云函数的参数
+      data: _data,
+      success(res) {
+        console.log(res)
+        _this.init()
         wx.showToast({
           title: '报名成功',
           icon: 'success',
           duration: 2000
         })
-      })
+      },
+      fail: console.error
+    })
     //插入活动record表
     db.collection('record')
       .add({
@@ -149,7 +152,13 @@ Page({
   },
   // 获取用户信息
   addNew() {
-    console.log(222)
+    if (!app.globalData.userInfo.nickName) {
+      wx.showToast({
+        icon: 'none',
+        title: '您还未登陆，请点击页面最上方登录'
+      })
+      return
+    }
     wx.navigateTo({
       url: '../activity/addNew'
     })
@@ -171,10 +180,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(app.globalData.userInfo){
-      this.init()
-    }
-    
+    if (app.globalData.userInfo._openid) this.init()
   },
 
   /**

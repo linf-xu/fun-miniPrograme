@@ -1,4 +1,18 @@
 /* miniprogram/pages/guide.wxss */
+.loginBox{
+  text-align: left;
+  width: 100%;
+  position: relative;
+  top: -20rpx;
+  left: 10rpx;
+}
+.login{
+  display: inline;
+  background: #f8f8f9;
+  font-size: 14px;
+  color: #576b95;
+  padding-left: 0;
+}
 section{
   margin: 20rpx 0;
   width: 100%;
@@ -38,6 +52,9 @@ section{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.contentRight{
+  min-width: 64px;
 }
 .wait{
   /* color: #07c160; */

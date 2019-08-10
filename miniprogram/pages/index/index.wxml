@@ -1,5 +1,14 @@
 <!--miniprogram/pages/guide.wxml-->
 <view class='container'>
+  <view wx:if="{{!nickName}}" class="loginBox">
+    <text>您还未登录，请先</text>
+    <button 
+      class="login"
+      open-type="getUserInfo" 
+      bindgetuserinfo="getUserInfo"> 
+      登录 
+    </button>
+  </view>
   <i-spin fix size="large" wx:if="{{pageLoading}}"/>
   <!-- 进行中的活动 -->
   <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper shadow5'>
@@ -18,7 +27,7 @@
       </view>
       <van-button 
         wx:if="{{item.curStatus=='wait'&&!item.isJoin}}"
-        class='wait' 
+        class='wait contentRight' 
         size="small" 
         plain 
         hairline
@@ -29,7 +38,7 @@
         立即报名
       </van-button>
       <view class='contentRight going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名<van-icon name="success" /></view>
-      <view class='going' wx:else>进行中<van-icon name="clock-o" /></view>
+      <view class='going contentRight' wx:else>进行中<van-icon name="clock-o" /></view>
     </view>
     <view>活动时间:
       <text class='ml15'>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
@@ -60,9 +69,9 @@
       type="primary" 
       bind:click="addNew"
     >
-      <text wx:if="{{!pageLoading&&waitingList.length<1}}">
+      <!-- <text wx:if="{{!pageLoading&&waitingList.length<1}}">
         还没有活动，赶快去 
-      </text>
+      </text> -->
       发起一个新的活动
     </van-button>
     
@@ -71,16 +80,12 @@
   <!-- 发起活动浮窗按钮 -->
   <van-icon name="plus" wx:if="{{waitingList.length>2}}"bindtap='addNew' class='floatIcon shadow5'/>
   
-  <!-- <navigator 
+  <navigator 
     url="../guide/index" 
     hover-class="navigator-hover">
     跳转到新页面
   </navigator>
-  <button 
-    open-type="getUserInfo" 
-    bindgetuserinfo="getUserInfo"> 
-    获取头像昵称 
-  </button> -->
+  
 </view>
     
 

@@ -1,4 +1,12 @@
 /* pages/activity/detail.wxss */
+.login{
+  display: inline;
+  background: #f8f8f9;
+  font-size: 14px;
+  color: #576b95;
+  padding: 0;
+  line-height: 1;
+}
 .list{
   justify-content: space-between;
 }
