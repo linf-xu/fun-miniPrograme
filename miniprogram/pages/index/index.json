@@ -4,6 +4,7 @@
     "van-button": "../../ui/button/index",
     "van-toast": "../../ui/toast/index",
     "van-icon": "../../ui/icon/index",
+    "i-divider": "../../ui/divider/index",
     "i-spin": "../../ui/spin/index"
   }
 }

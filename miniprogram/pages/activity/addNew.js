@@ -27,8 +27,10 @@ Page(Object.assign({
     maxDate: new Date().getTime()+180*24*60*60*1000,
     currentDate: new Date().getTime(),
     showTimePicker:false,
-    startTime:'',
-    endTime:'',
+    startTime: '',
+    startTimeStamp:'',
+    endTime: '',
+    endTimeStamp:'',
     timePicker:'start',
     tempList:[],
     formatter(type, value) {
@@ -53,7 +55,7 @@ Page(Object.assign({
     let userInfo = app.globalData.userInfo
     console.log(app.globalData)
     this.setData({
-      openid: userInfo._openid,
+      openid: app.globalData.openid,
       avatarUrl: userInfo.avatarUrl,
       nickName: userInfo.nickName,
       realName: userInfo.realName || ''
@@ -109,16 +111,20 @@ Page(Object.assign({
   // 获取选择的时间
   onTimeInput(e){
     let formData = this.formDate(e.detail);
+    let timeStamp = new Date(e.detail).getTime()
+    console.log(timeStamp)
     console.log(formData)
     if(this.data.timePicker=='start'){
       this.setData({
         showTimePicker: false,
-        startTime: formData.slice(5, 16)
+        startTime: formData.slice(5, 16),
+        startTimeStamp:timeStamp
       })
     }else{
       this.setData({
         showTimePicker: false,
-        endTime: formData.slice(5, 16)
+        endTime: formData.slice(5, 16),
+        endTimeStamp: timeStamp
       })
     }
   },
@@ -167,6 +173,7 @@ Page(Object.assign({
         wx.showToast({
           title: '新建活动成功',
         })
+        this.setData({ id: res._id})
         setTimeout(() => {
           wx.redirectTo({
             url: '../activity/detail?id=' + res._id
@@ -297,6 +304,9 @@ Page(Object.assign({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '里边有好玩的活动！',
+      path:'pages/index/index'
+    }
   }
 },inputMixins))

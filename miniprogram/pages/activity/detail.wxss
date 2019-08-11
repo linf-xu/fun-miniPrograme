@@ -75,8 +75,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20rpx 0;
+}
+.joinsList.first{
+  padding-top: 0;
+  border: none;
 }
 .joinsList .left{
   display: flex;
   align-items: center;
+}
+.van-collapse-item__content.collapse-item{
+  padding: 0 30rpx;
 }

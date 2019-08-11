@@ -1,17 +1,8 @@
 <!--pages/activity/detail.wxml-->
-<wxs module="dateFr" src="../../filter/date.wxs"></wxs>
+
 
 <i-spin fix size="large" wx:if="{{pageLoading}}"/>
 <van-cell-group border="{{false}}">
-  <!-- <view wx:if="{{nickName}}" class="loginBox">
-    <text>您还未登录，请先</text>
-    <button 
-      class="login"
-      open-type="getUserInfo" 
-      bindgetuserinfo="getUserInfo"> 
-      登录 
-    </button>
-  </view> -->
   <view class='header'>
     <view>
       发起人：<image src='{{playmaker.avatarUrl}}'/>{{playmaker.nickName}}
@@ -24,9 +15,9 @@
         bindgetuserinfo="getUserInfo"> 
         登录 
       </button>
-      <text wx:if="{{isPlaymaker&&!edit}}" bindtap='edit' class='edit'>编辑</text>
-      <text wx:if="{{!isPlaymaker&&!edit&&isJoin}}" bindtap='cancel' class='cancel'>取消{{isPlaymaker?'活动':'报名'}}</text>
-      <text wx:if="{{isPlaymaker&&edit}}" bindtap='edited' class='edit'>完成</text>
+      <text wx:if="{{isPlaymaker&&!edit&&curStatus == 'wait'}}" bindtap='edit' class='edit'>编辑</text>
+      <text wx:if="{{!edit&&isJoin&&curStatus == 'wait'}}" bindtap='cancel' class='cancel'>取消{{isPlaymaker?'活动':'报名'}}</text>
+      <text wx:if="{{isPlaymaker&&edit&&curStatus == 'wait'}}" bindtap='edited' class='edit'>完成</text>
     </view>
   </view>
 </van-cell-group>
@@ -56,7 +47,7 @@
     />
 </van-cell-group>
 
-<van-cell-group  border="{{false}}">
+<van-cell-group wx:if="{{curStatus == 'wait'}}"  border="{{false}}">
   <van-button 
     wx:if="{{!isJoin}}"
     class='mt30'
@@ -80,15 +71,19 @@
 <van-cell-group border="{{false}}">
   <!-- <van-collapse value="{{'已报名-'+acInfo.joins.length+'/'+acInfo.joinNum}}" bind:change="onChange"> -->
   <van-collapse value="{{collapse}}" bind:change="onChange">
-    <van-collapse-item name="1" title="已报名">
+    <van-collapse-item name="1" title="已报名" content-class="collapse-item">
       <text slot="value">{{acInfo.joins.length+'/'+acInfo.joinNum}}</text>
-      <view class='joinsList' wx:for="{{acInfo.joins}}" wx:key="{{index}}">
+      <view 
+        class="{{index==0?'joinsList':'joinsList van-hairline--top'}}" 
+        wx:for="{{acInfo.joins}}" 
+        wx:key="{{index}}"
+      >
        <view class='left'>
         <image class='ava' src='{{item.avatarUrl}}'></image>
         {{item.nickName}}
         <text wx:if="{{item.realName}}">{{'('+item.realName+')'}}</text>
        </view> 
-       <text>{{dateFr.getDate(item.updateTime,'-')}}</text>
+       <text>{{item.updateTime}}</text>
       </view>
     </van-collapse-item>
   </van-collapse>

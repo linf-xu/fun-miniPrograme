@@ -13,7 +13,8 @@ App({
     const db = wx.cloud.database()
     this.globalData = {
       openid:'',
-      userInfo:{}
+      userInfo:{},
+      nickName:''
     }
     wx.cloud.callFunction({
       name: 'login',
@@ -26,26 +27,41 @@ App({
     })
   },
   updateUserInfo(userInfo){
-    if (userInfo) console.log(JSON.parse(userInfo.detail.rawData))
+    if (userInfo){
+      let _info = JSON.parse(userInfo.detail.rawData)
+      this.setGlobalData({ userInfo: _info, nickName: _info.nickName })
+    }
     const db = wx.cloud.database()
     db.collection('user').where({
       _openid: this.globalData.openid
     }).get({
+      
       success: res => {
         console.log('[数据库] [查询记录] 成功: ', res)
         if (res.data.length > 0){
           console.log('getuserinfo from db')
-          this.setGlobalData({ userInfo: res.data[0] })
-          return
+          if (!userInfo){  //初始化
+            this.setGlobalData({ userInfo: res.data[0], nickName: res.data[0].nickName})
+          } 
         }
-        if (userInfo) {
+        if (userInfo) {//用户点击获取授权
+          let _info = JSON.parse(userInfo.detail.rawData)
           //用户未注册到数据库，获取用户授权并记录到数据库中
-          db.collection('user').add(
-            Object.assign({
-              createTime: db.serverDate(),
-              updateTime: db.serverDate()
-            }, JSON.parse(userInfo.detail.rawData))
-          )
+            //更新
+          if (res.data.length > 0){
+            db.collection('user').doc(this.globalData.userInfo._id).update({
+              data: Object.assign({
+                updateTime: db.serverDate()
+              }, _info)
+            })
+          }else{//添加
+            db.collection('user').add({
+              data: Object.assign({
+                createTime: db.serverDate(),
+                updateTime: db.serverDate()
+              }, _info)
+            })
+          }
         }
       },
       fail: err => {

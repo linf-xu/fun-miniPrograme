@@ -1,11 +1,12 @@
 var DateFr = {
 
   getDate: function (time, splitStr) {
-    console.log(time)
+    console.log('ddddd', JSON.stringify(time))
 
     if (!time) return '';
 
-    var date =getDate(time);
+    // var date =getDate(time);
+    var date = time
     var M = date.getMonth() + 1;
     var y = date.getFullYear();
     var d = date.getDate(); 

@@ -12,7 +12,9 @@ Page({
     waitingList:[],
     endList: [],
     pageLoading: true,
-    nickName:''
+    nickName:'',
+    scrollTop:0,
+    addTop:''
   },
 
   /**
@@ -22,6 +24,13 @@ Page({
     app.$watch('userInfo', (val, old) => {
       this.init()
     })
+    app.$watch('nickName', (val, old) => {
+      if (app.globalData.userInfo.nickName) {
+        this.setData({
+          nickName: app.globalData.userInfo.nickName
+        })
+      }
+    })
   },
   getData(){
     
@@ -30,32 +39,62 @@ Page({
     app.updateUserInfo(res)
   },
   init(){
-    this.setData({
-      nickName: app.globalData.userInfo.nickName
-    })
+    if (app.globalData.userInfo.nickName){
+      this.setData({
+        nickName: app.globalData.userInfo.nickName
+      })
+    }
+    console.log('init',app.globalData)
+    if (!app.globalData.openid) return
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters
     db.collection('activityList').orderBy('updateTime', 'desc').where({
       isStart: true
     }).get({
       success: res => {
-        console.log(app.globalData.userInfo._openid)
+        console.log(app.globalData.openid)
         // console.log(res.data)
-        let waitingList = res.data
-        waitingList.map(item => {
-          // console.log(item.joinIds.indexOf(app.globalData.userInfo._openid))
-          if (item.joinIds.indexOf(app.globalData.userInfo._openid)>-1){
-            item.isJoin = true
-          }
-        })
+        let acList = res.data
+        let nowStamp = new Date().getTime()
+        try{
+          acList.map(item => {
+            // console.log(item.joinIds.indexOf(app.globalData.openid))
+            if (item.joinIds.indexOf(app.globalData.openid) > -1) {
+              item.isJoin = true
+            }
+            if (item.isStart && nowStamp > item.startTimeStamp && nowStamp < item.endTimeStamp){
+              item.curStatus = 'going'
+            }
+            if (item.isStart && nowStamp > item.endTimeStamp) {
+              item.curStatus = 'end'
+            }
+          })
+        }catch(e){
+          console.log(e)
+        }
         // console.log(waitingList)
+        console.log(acList)
+        let waitingList = acList.filter(item=>{
+          return item.curStatus == 'wait' || item.curStatus == 'going'
+        })
+        let endList = acList.filter(item => {
+          return item.isEnd || item.curStatus == 'end'
+        })
         this.setData({
           waitingList,
+          endList,
           pageLoading: false
         })
-        // this.setData({
-        //   pageLoading: false
-        // })
+        const query = wx.createSelectorQuery()
+        query.select('#add').boundingClientRect()
+        query.exec((res) => {
+          this.setData({
+            addTop:res[0].top
+          })
+          // res[0].top       // #the-id节点的上边界坐标
+          // res[1].scrollTop // 显示区域的竖直滚动位置
+        })
+        console.log(this.data.pageLoading)
         console.log('[数据库] [查询记录] 成功: ', res)
       },
       fail: err => {
@@ -105,13 +144,14 @@ Page({
     //更新活动list表
     let joins = this.data.waitingList[index].joins
     joins.push({
-      openid: app.globalData.userInfo._openid,
+      openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
+      updateTime: db.serverDate(),
       realName: app.globalData.userInfo._realName
     })
     console.log(app.globalData.userInfo)
-    let joinIds = this.data.waitingList[index].joinIds + ',' + app.globalData.userInfo._openid
+    let joinIds = this.data.waitingList[index].joinIds + ',' + app.globalData.openid
     let _data = {
       id: this.data.waitingList[index]._id,
       data: {
@@ -169,6 +209,12 @@ Page({
       url: '../activity/detail?id='+e.currentTarget.dataset.id
     })
   },
+  scroll: function (e) {
+    console.log(e.detail.scrollTop)
+    this.setData({
+      scrollTop: e.detail.scrollTop
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -180,7 +226,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.userInfo._openid) this.init()
+    if (app.globalData.openid) this.init()
   },
 
   /**
@@ -215,6 +261,8 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '里边有好玩的活动！'
+    }
   }
 })

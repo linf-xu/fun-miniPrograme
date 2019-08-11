@@ -17,7 +17,8 @@ Page(Object.assign({
     imgList:[],
     imgstyles:[],
     collapse:'',
-    nickName: ''
+    nickName: '',
+    curStatus:'wait'
   },
 
   /**
@@ -26,6 +27,13 @@ Page(Object.assign({
   onLoad: function (options) {
     app.$watch('userInfo', (val, old) => {
       this.init()
+    })
+    app.$watch('nickName', (val, old) => {
+      if (app.globalData.userInfo.nickName) {
+        this.setData({
+          nickName: app.globalData.userInfo.nickName
+        })
+      }
     })
     this.setData({ 
       id: options.id
@@ -48,9 +56,11 @@ Page(Object.assign({
     if (this.data.id) this.init()
   },
   init(){
-    this.setData({
-      nickName: app.globalData.userInfo.nickName
-    })
+    if (app.globalData.userInfo.nickName) {
+      this.setData({
+        nickName: app.globalData.userInfo.nickName
+      })
+    }
     console.log('globalData',app.globalData)
     // 查询当前用户所有的 counters
     db.collection('activityList').where({
@@ -70,15 +80,22 @@ Page(Object.assign({
         try{
           let acInfo = res.data[0],
               playmaker = acInfo.joins && acInfo.joins[0]
+          acInfo.joins.map(item => {
+            item.updateTime = this.getDate(item.updateTime,'-')
+          })
           this.setData({
             acInfo,
             playmaker,
             pageLoading: false,
             time: acInfo.startTime + ' <--> ' + acInfo.endTime,
-            isPlaymaker: playmaker && playmaker.openid == app.globalData.userInfo._openid,
-            isJoin: acInfo.joinIds.indexOf(app.globalData.userInfo._openid)>-1,
+            isPlaymaker: playmaker && playmaker.openid == app.globalData.openid,
+            isJoin: acInfo.joinIds.indexOf(app.globalData.openid)>-1,
             imgList:acInfo.imgList
           })
+          let nowStamp = new Date().getTime()
+          if (acInfo.isEnd || nowStamp > acInfo.endTimeStamp) {
+            this.setData({curStatus:'end'})
+          }
           console.log('[数据库] [查询记录] 成功: ', res)
         }catch(e){
           console.log(e)
@@ -208,14 +225,14 @@ Page(Object.assign({
         }
       })
     }else{
-      this.baoming()
+      this.upadteBaomingDb()
     }
   }, 
   cancelBaoming(){
     console.log('cancel')
     let joins = this.data.acInfo.joins
     let joinidsArr = this.data.acInfo.joinIds.split(',')
-    let index = joinidsArr.findIndex(item => { item == app.globalData.userInfo._openid})
+    let index = joinidsArr.findIndex(item => { item == app.globalData.openid})
     joins.splice(index, 1)
     joinidsArr.splice(index, 1)
     let joinIds = joinidsArr.join(',')
@@ -228,27 +245,17 @@ Page(Object.assign({
       })
     })
   },
-  // 报名
-  baoming() {
-    if (!this.data.userInfo) {
-      app.getUserInfo().then(() => {
-        this.upadteBaomingDb()
-      })
-      return
-    }
-    this.upadteBaomingDb()
-    return false
-  },
   upadteBaomingDb() {
     //更新活动list表
     let joins = this.data.acInfo.joins
     joins.push({
-      openid: app.globalData.userInfo._openid,
-      avatarUrl: this.data.userInfo.avatarUrl,
-      nickName: this.data.userInfo.nickName,
-      realName: this.data.userInfo.realName
+      openid: app.globalData.openid,
+      avatarUrl: app.globalData.userInfo.avatarUrl,
+      nickName: app.globalData.userInfo.nickName,
+      updateTime: db.serverDate(),
+      realName: app.globalData.userInfo.realName
     })
-    let joinIds = this.data.acInfo.joinIds + ',' + app.globalData.userInfo._openid
+    let joinIds = this.data.acInfo.joinIds + ',' + app.globalData.openid
     this.update({ joins, joinIds}).then(()=>{
       this.init()
       wx.showToast({
@@ -374,6 +381,39 @@ Page(Object.assign({
     this.setData({
       collapse: event.detail
     });
+  },
+  getDate(time, splitStr) {
+    if (!time) return '';
+
+    // var date =getDate(time);
+    console.log(time)
+    var date = time
+    try{
+      date = new Date(time)
+    }catch(e){
+      console.log(e)
+    }
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (h < 10) h = "0" + h;
+    if (m < 10) m = "0" + m;
+    if (s < 10) s = "0" + s;
+
+    if (splitStr)
+      return y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+    else
+      return {
+        y: y,
+        M: M,
+        d: d
+      };
   },
 
   /**

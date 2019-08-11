@@ -9,8 +9,6 @@
   size="large" 
   plain 
   type="success">{{item.tempName}}</van-tag>
-  <van-tag class="custom-class" bindtap="addTemp" size="large" plain type="success">+新增模板</van-tag>
-  
 </view>
 <h2 class="first">手动填写</h2>
 

@@ -17,11 +17,22 @@ section{
   margin: 20rpx 0;
   width: 100%;
 }
-.empty{
+.addNew{
   color: #fff;
   text-align: center;
   width: 100%;
-  padding: 30rpx 0;
+  padding: 30rpx 0 0 0;
+}
+.empty{
+  color: #bfbfbf;
+  text-align: center;
+  width: 100%;
+  padding: 30rpx 0 0 0;
+}
+.empty image{
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 10rpx;
 }
 .cardWraper{
   background: #fff;
@@ -55,10 +66,20 @@ section{
 }
 .contentRight{
   min-width: 64px;
+  align-self: center;
+  text-align: center;
+  display: flex;
+}
+.contentRight image{
+  height: 30rpx;
+  width: 30rpx;
+  align-self: center;
 }
 .wait{
-  /* color: #07c160; */
-  align-self: center;
+  min-width: 70px;
+}
+.endList .shadow2{
+  box-shadow: 0;
 }
 .address{
   color: #576b95
@@ -107,4 +128,7 @@ section{
 }
 .ready{
   color: #07c160
+}
+.i-divider-content{
+  background: #f8f8f9
 }
