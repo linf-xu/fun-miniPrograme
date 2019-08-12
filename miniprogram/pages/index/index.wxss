@@ -87,19 +87,23 @@ section{
 .cardBottom{
   color: #80848f;
 }
-
-.floatIcon{
-  background: #07c160;
-  color: #fff;
+.floatDiv{
   position: fixed;
-  right: 5rpx;
-  bottom: 150rpx;
-  height: 120rpx;
-  width: 120rpx;
-  font-size: 40px;
+  right: 10rpx;
+  bottom: 30rpx;
+}
+.floatIcon{
+  display: block;
+  background: #fff;
+  opacity: .8;
+  margin-top: 10rpx;
+  color: #666;
+  height: 90rpx;
+  width: 90rpx;
+  font-size: 20px;
   border-radius: 50%;
   text-align: center;
-  line-height: 140rpx;
+  line-height: 100rpx;
 }
 .joinsList{
   display: flex;

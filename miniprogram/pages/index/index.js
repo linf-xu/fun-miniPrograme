@@ -85,16 +85,6 @@ Page({
           endList,
           pageLoading: false
         })
-        const query = wx.createSelectorQuery()
-        query.select('#add').boundingClientRect()
-        query.exec((res) => {
-          this.setData({
-            addTop:res[0].top
-          })
-          // res[0].top       // #the-id节点的上边界坐标
-          // res[1].scrollTop // 显示区域的竖直滚动位置
-        })
-        console.log(this.data.pageLoading)
         console.log('[数据库] [查询记录] 成功: ', res)
       },
       fail: err => {
@@ -201,6 +191,11 @@ Page({
     }
     wx.navigateTo({
       url: '../activity/addNew'
+    })
+  },
+  goHome() {
+    wx.navigateTo({
+      url: '../myHome/index'
     })
   },
   // 查看详情

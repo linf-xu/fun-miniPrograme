@@ -14,7 +14,9 @@ App({
     this.globalData = {
       openid:'',
       userInfo:{},
-      nickName:''
+      nickName:'',
+      realName:'',
+      id:''
     }
     wx.cloud.callFunction({
       name: 'login',
@@ -29,7 +31,7 @@ App({
   updateUserInfo(userInfo){
     if (userInfo){
       let _info = JSON.parse(userInfo.detail.rawData)
-      this.setGlobalData({ userInfo: _info, nickName: _info.nickName })
+      this.setGlobalData({ userInfo: _info, nickName: _info.nickName, realName: _info.realName })
     }
     const db = wx.cloud.database()
     db.collection('user').where({
@@ -41,7 +43,12 @@ App({
         if (res.data.length > 0){
           console.log('getuserinfo from db')
           if (!userInfo){  //初始化
-            this.setGlobalData({ userInfo: res.data[0], nickName: res.data[0].nickName})
+            this.setGlobalData({
+              userInfo: res.data[0], 
+              nickName: res.data[0].nickName, 
+              realName: res.data[0].realName,
+              id: res.data[0]._id
+            })
           } 
         }
         if (userInfo) {//用户点击获取授权
@@ -60,6 +67,8 @@ App({
                 createTime: db.serverDate(),
                 updateTime: db.serverDate()
               }, _info)
+            }).then(res=>{
+              this.setGlobalData({ id: res.data[0].id})
             })
           }
         }

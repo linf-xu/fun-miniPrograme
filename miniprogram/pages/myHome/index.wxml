@@ -1,0 +1,23 @@
+<!--index.wxml-->
+<view class="userinfo">
+  <image class="avatar" src="{{avatarUrl}}"></image>
+  <button 
+    open-type="getUserInfo" 
+    bindgetuserinfo="getUserInfo"
+    class="nickName"
+  >{{nickName||'您还未登录，点击登录'}}</button>
+</view>
+<view class="list realname">
+  <van-field
+    wx:if="{{nickName}}"
+    value="{{ realName }}"
+    name="realName"
+    clearable
+    autosize
+    focus
+    label="活动昵称"
+    placeholder="建议填写真实名字"
+    bindinput="inputgetName" 
+    />
+    <text class="update" bindtap='update'>更新</text>
+  </view>
