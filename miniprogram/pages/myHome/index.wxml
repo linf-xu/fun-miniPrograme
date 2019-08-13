@@ -1,23 +1,30 @@
 <!--index.wxml-->
 <view class="userinfo">
+  <text wx:if="{{nickName}}">欢迎</text>
   <image class="avatar" src="{{avatarUrl}}"></image>
   <button 
     open-type="getUserInfo" 
     bindgetuserinfo="getUserInfo"
     class="nickName"
   >{{nickName||'您还未登录，点击登录'}}</button>
+  <text wx:if="{{nickName}}" class="update" bindtap='update'>{{edit?'完成':'更新资料'}}</text>
 </view>
-<view class="list realname">
+<view wx:if="{{nickName}}" class="list realname">
   <van-field
-    wx:if="{{nickName}}"
-    value="{{ realName }}"
+    wx:if="{{edit}}"
+    value="{{realName}}"
     name="realName"
     clearable
     autosize
-    focus
-    label="活动昵称"
-    placeholder="建议填写真实名字"
+    focus="{{edit}}"
+    label="姓名"
+    placeholder="请填写您的姓名"
     bindinput="inputgetName" 
     />
-    <text class="update" bindtap='update'>更新</text>
+    <van-cell style="width:100%" wx:if="{{!edit&&realName}}" title="姓名" value="{{realName}}" />
+    <van-cell style="width:100%" wx:if="{{!edit&&!realName}}" title="姓名" value="请填写您的姓名" />
+  </view>
+  <view class="tips">
+    <view>建议填写真实姓名</view>
+    <view>会展示在您的微信昵称之后</view>
   </view>

@@ -5,7 +5,7 @@
 <van-cell-group border="{{false}}">
   <view class='header'>
     <view>
-      发起人：<image src='{{playmaker.avatarUrl}}'/>{{playmaker.nickName}}
+      发起人：<image src='{{playmaker.avatarUrl}}'/>{{playmaker.nickName}}{{playmaker.realName?'('+playmaker.realName+')':""}}
     </view> 
     <view>
       <button 

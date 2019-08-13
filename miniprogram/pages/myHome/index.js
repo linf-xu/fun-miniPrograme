@@ -12,6 +12,7 @@ Page(Object.assign({
     nickName: '',
     realName: '',
     openid: '',
+    edit:false,
   },
 
   /**
@@ -43,19 +44,24 @@ Page(Object.assign({
     app.updateUserInfo(res)
   },
   update(){
+    if(!this.data.edit){
+      this.setData({ edit:true})
+      return
+    }
     db.collection('user').doc(app.globalData.userInfo._id).update({
       data: {
         updateTime: db.serverDate(),
         realName: this.data.realName
       }
     }).then(() => {
+      this.setData({ edit: false })
       wx.showToast({
         title: '更新成功',
         icon: 'success',
         duration: 2000
       })
+      app.setGlobalData({realName: this.data.realName})
     })
-    app.setGlobalData({realName: this.data.realName})
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
