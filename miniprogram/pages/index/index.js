@@ -138,7 +138,7 @@ Page({
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
       updateTime: db.serverDate(),
-      realName: app.globalData.userInfo._realName
+      realName: app.globalData.userInfo.realName
     })
     console.log(app.globalData.userInfo)
     let joinIds = this.data.waitingList[index].joinIds + ',' + app.globalData.openid
@@ -222,6 +222,13 @@ Page({
    */
   onShow: function () {
     if (app.globalData.openid) this.init()
+    setTimeout(()=>{
+      if (app.globalData.userInfo.realName) return
+      Toast({
+        position:'bottom',
+        message: '建议点击右下角我的备注名字'
+      });
+    },1000)
   },
 
   /**

@@ -137,3 +137,4 @@
     <van-icon name="user-o" wx:if="{{waitingList.length>0}}"bindtap='goHome' class='floatIcon shadow5'/>
   </view>
 </view>
+<van-toast id="van-toast" />
