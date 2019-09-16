@@ -14,7 +14,8 @@ Page({
     pageLoading: true,
     nickName:'',
     scrollTop:0,
-    addTop:''
+    addTop:'',
+    activityTab:0
   },
 
   /**
@@ -127,6 +128,18 @@ Page({
       })
       return
     }
+    if (!app.globalData.userInfo.realName) {
+      wx.showToast({
+        icon: 'none',
+        title: '请先备注姓名'
+      })
+      setTimeout(() => {
+        wx.navigateTo({
+          url: '../myHome/index'
+        }, 1000)
+      })
+      return
+    }
     this.upadteBaomingDb(e.currentTarget.dataset.index)
     return false
   },
@@ -189,6 +202,19 @@ Page({
       })
       return
     }
+    console.log(app.globalData.userInfo)
+    if (!app.globalData.userInfo.realName) {
+      wx.showToast({
+        icon: 'none',
+        title: '请先备注姓名'
+      })
+      setTimeout(()=>{
+        wx.navigateTo({
+          url: '../myHome/index'
+        },1000)
+      })
+      return
+    }
     wx.navigateTo({
       url: '../activity/addNew'
     })
@@ -209,6 +235,12 @@ Page({
     this.setData({
       scrollTop: e.detail.scrollTop
     })
+  },
+  showNew(){
+    this.setData({activityTab:0})
+  },
+  showOld(){
+    this.setData({activityTab: 1 })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -79,7 +79,12 @@ Page(Object.assign({
         }
         try{
           let acInfo = res.data[0],
-              playmaker = acInfo.joins && acInfo.joins[0]
+            playmaker = { 
+              openid: acInfo._openid,
+              nickName: acInfo.nickName,
+              avatarUrl: acInfo.avatarUrl, 
+              realName: acInfo.realName
+            }
           acInfo.joins.map(item => {
             item.updateTime = this.getDate(item.updateTime,'-')
           })

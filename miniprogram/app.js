@@ -8,7 +8,7 @@ App({
     } else {
       wx.cloud.init({
         traceUser: true,
-        env: 'prod-6jygs'
+        env: 'fun-a1qgd'
       })
     }
     const db = wx.cloud.database()

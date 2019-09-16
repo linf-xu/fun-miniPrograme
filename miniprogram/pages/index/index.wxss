@@ -13,6 +13,41 @@
   color: #576b95;
   padding-left: 0;
 }
+.swiperWrap{
+  width: 100%;
+}
+.swiperWrap image{
+  width: 690rpx;
+  height: 360rpx;
+}
+.tabWrap{
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  color: #666;
+}
+.tabWrap view{
+  margin-right: 60rpx;
+  height: 80rpx;
+  float: left;
+  line-height: 80rpx;
+}
+.activity{
+  position: relative;
+  font-size: 18px;
+  color: #333;
+}
+.activity::after{
+  content: "";
+  background-color: #44CBC2;
+  border-radius: 3rpx;
+  position: absolute;
+  bottom: 0;
+  width: 80rpx;
+  height: 6rpx;
+  left: 50%;
+  transform: translateX(-50%)
+}
 section{
   margin: 20rpx 0;
   width: 100%;
