@@ -96,6 +96,14 @@
     placeholder="模板名称(必填)"
     bindinput="inputgetName" 
   />
+
+  <van-switch-cell
+    title="我也参加"
+    checked="{{ makerJoin }}"
+    bind:change="makerJoin"
+    active-color="#07c160"
+    class="van-cell"
+  />
 </van-cell-group>
      
 <view class='mt20'>

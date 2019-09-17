@@ -33,6 +33,7 @@ Page(Object.assign({
     endTimeStamp:'',
     timePicker:'start',
     tempList:[],
+    makerJoin:true,
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -131,6 +132,9 @@ Page(Object.assign({
   //是否添加为模板
   isTemp(event){
     this.setData({ isTemp: event.detail });
+  },
+  makerJoin(event) {
+    this.setData({ makerJoin: event.detail });
   },
   submit(){
     if (
