@@ -135,7 +135,7 @@ Page({
       })
       setTimeout(() => {
         wx.navigateTo({
-          url: '../myHome/index'
+          url: '../myHome/index?needBack=1'
         }, 1000)
       })
       return
@@ -150,7 +150,7 @@ Page({
       openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
-      updateTime: db.serverDate(),
+      updateTime: new Date().getTime(),
       realName: app.globalData.userInfo.realName
     })
     console.log(app.globalData.userInfo)
@@ -160,7 +160,7 @@ Page({
       data: {
         joins,
         joinIds,
-        updateTime: db.serverDate(),
+        updateTime: new Date().getTime(),
       }
     }
     let _this = this
@@ -184,8 +184,8 @@ Page({
     db.collection('record')
       .add({
         data: {
-          createTime: db.serverDate(),
-          updateTime: db.serverDate(),
+          createTime: new Date().getTime(),
+          updateTime: new Date().getTime(),
           activityId: this.data.waitingList[index]._id,
           role:'join',
           action:'add'
@@ -210,7 +210,7 @@ Page({
       })
       setTimeout(()=>{
         wx.navigateTo({
-          url: '../myHome/index'
+          url: '../myHome/index?needBack=1'
         },1000)
       })
       return
@@ -254,13 +254,13 @@ Page({
    */
   onShow: function () {
     if (app.globalData.openid) this.init()
-    setTimeout(()=>{
-      if (app.globalData.userInfo.realName) return
-      Toast({
-        position:'bottom',
-        message: '建议点击右下角我的备注名字'
-      });
-    },1000)
+    // setTimeout(()=>{
+    //   if (app.globalData.userInfo.realName) return
+    //   Toast({
+    //     position:'bosttom',
+    //     message: '建议点击右下角我的备注名字'
+    //   });
+    // },1000)
   },
 
   /**

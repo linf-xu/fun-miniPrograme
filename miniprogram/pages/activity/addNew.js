@@ -153,25 +153,35 @@ Page(Object.assign({
   },
   //新建活动
   onAdd() {
-    
+    let addObj={
+      createTime: new Date().getTime(),
+      updateTime: new Date().getTime(),
+      joins:[],
+      joinIds: '',
+      imgList: [],
+      playmaker:{
+        openid: this.data.openid,
+        avatarUrl: this.data.avatarUrl || '',
+        nickName: this.data.nickName || '',
+        realName: this.data.realName || ''
+      }
+    }
+    if (this.data.makerJoin){
+      addObj.joins = [
+        {
+          openid: this.data.openid,
+          avatarUrl: this.data.avatarUrl || '',
+          nickName: this.data.nickName || '',
+          realName: this.data.realName || '',
+          updateTime: new Date().getTime()
+        }
+      ]
+      addObj.joinIds= this.data.openid
+    }
+    console.log(addObj)
     //插入activitylist
     db.collection('activityList').add({
-        data: Object.assign({
-          createTime: db.serverDate(),
-          updateTime: db.serverDate()
-        },{
-          joins:[
-            {
-              openid: this.data.openid,
-              avatarUrl: this.data.avatarUrl || '',
-              nickName: this.data.nickName || '',
-              realName: this.data.realName || '',
-              updateTime: db.serverDate()
-            }
-          ],
-            joinIds: this.data.openid,
-            imgList:[]
-        },this.data)
+      data: Object.assign(addObj,this.data)
     })
       .then(res => {
         wx.showToast({
@@ -195,8 +205,8 @@ Page(Object.assign({
     db.collection('record')
       .add({
         data: {
-          createTime: db.serverDate(),
-          updateTime: db.serverDate(),
+          createTime: new Date().getTime(),
+          updateTime: new Date().getTime(),
           role: 'playmaker',
           action: 'create'
         }
@@ -209,8 +219,8 @@ Page(Object.assign({
       db.collection('tempList')
         .add({
           data: {
-            createTime: db.serverDate(),
-            updateTime: db.serverDate(),
+            createTime: new Date().getTime(),
+            updateTime: new Date().getTime(),
             title: this.data.title,
             name: this.data.name,
             address: this.data.address,

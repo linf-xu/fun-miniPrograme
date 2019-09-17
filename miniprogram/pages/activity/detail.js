@@ -79,12 +79,13 @@ Page(Object.assign({
         }
         try{
           let acInfo = res.data[0],
-            playmaker = { 
-              openid: acInfo._openid,
-              nickName: acInfo.nickName,
-              avatarUrl: acInfo.avatarUrl, 
-              realName: acInfo.realName
-            }
+            // playmaker = { 
+            //   openid: acInfo._openid,
+            //   nickName: acInfo.nickName,
+            //   avatarUrl: acInfo.avatarUrl, 
+            //   realName: acInfo.realName
+            // }
+          playmaker = acInfo.playmaker
           acInfo.joins.map(item => {
             item.updateTime = this.getDate(item.updateTime,'-')
           })
@@ -131,7 +132,7 @@ Page(Object.assign({
       .doc(this.data.id)
       .update({
         data: {
-          updateTime: db.serverDate(),
+          updateTime: new Date().getTime(),
           remarks: this.data.acInfo.remarks
         }
       }).then(() => {
@@ -216,6 +217,18 @@ Page(Object.assign({
       })
       return
     }
+    if (!app.globalData.userInfo.realName) {
+      wx.showToast({
+        icon: 'none',
+        title: '请先备注姓名'
+      })
+      setTimeout(()=>{
+        wx.navigateTo({
+          url: '../myHome/index?needBack=1'
+        },1000)
+      })
+      return
+    }
     let that = this
     if(this.data.isJoin){
       wx.showModal({
@@ -257,7 +270,7 @@ Page(Object.assign({
       openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
-      updateTime: db.serverDate(),
+      updateTime: new Date().getTime(),
       realName: app.globalData.userInfo.realName
     })
     let joinIds = this.data.acInfo.joinIds + ',' + app.globalData.openid
@@ -274,8 +287,8 @@ Page(Object.assign({
     db.collection('record')
       .add({
         data: {
-          createTime: db.serverDate(),
-          updateTime: db.serverDate(),
+          createTime: new Date().getTime(),
+          updateTime: new Date().getTime(),
           activityId: this.data.id,
           role: 'join',
           action:'add'
@@ -328,7 +341,7 @@ Page(Object.assign({
       let _data = {
         id: this.data.id,
         data: Object.assign({
-          updateTime: db.serverDate(),
+          updateTime: new Date().getTime(),
         }, obj)
       }
       wx.cloud.callFunction({
@@ -345,7 +358,7 @@ Page(Object.assign({
       //   .doc(this.data.id)
       //   .update({
       //     data: Object.assign({
-      //       updateTime: db.serverDate(),
+      //       updateTime: new Date().getTime(),
       //     }, obj)
       //   })
       //   .then((e) => {
@@ -454,9 +467,9 @@ Page(Object.assign({
    */
   onShareAppMessage: function (res) {
     console.log(res)
-    let title = '我已经报名了，快来参加吧'
+    let title = '我报名' + this.data.acInfo.title + '了，快来参加吧。' + this.data.acInfo.joins.length + ' /' + this.data.acInfo.joinNum
     if(this.data.isPlaymaker){
-      title = '我发起了新活动，快来参加吧'
+      title = '我发起了' + this.data.acInfo.title + '，快来参加吧' + this.data.acInfo.joins.length + ' /' + this.data.acInfo.joinNum
     }
     return {
       title: title

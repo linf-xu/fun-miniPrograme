@@ -13,12 +13,19 @@ Page(Object.assign({
     realName: '',
     openid: '',
     edit:false,
+    needBack:0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (options.needBack == 1){
+      this.setData({
+        needBack:1,
+        edit:true
+      })
+    }
     app.$watch('userInfo', (val, old) => {
       this.init()
     })
@@ -50,17 +57,26 @@ Page(Object.assign({
     }
     db.collection('user').doc(app.globalData.userInfo._id).update({
       data: {
-        updateTime: db.serverDate(),
+        updateTime: new Date().getTime(),
         realName: this.data.realName
       }
-    }).then(() => {
+    }).then((r) => {
+      console.log(r)
       this.setData({ edit: false })
       wx.showToast({
         title: '更新成功',
         icon: 'success',
         duration: 2000
       })
-      app.setGlobalData({realName: this.data.realName})
+      app.setGlobalData({ 
+        realName: this.data.realName,
+        userInfo: Object.assign({}, app.globalData.userInfo, { realName: this.data.realName }) 
+      })
+      if(this.data.needBack){
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 2000)
+      }
     })
   },
   /**

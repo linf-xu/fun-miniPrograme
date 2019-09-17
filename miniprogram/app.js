@@ -59,14 +59,14 @@ App({
           if (res.data.length > 0){
             db.collection('user').doc(this.globalData.userInfo._id).update({
               data: Object.assign({
-                updateTime: db.serverDate()
+                updateTime: new Date().getTime()
               }, _info)
             })
           }else{//添加
             db.collection('user').add({
               data: Object.assign({
-                createTime: db.serverDate(),
-                updateTime: db.serverDate()
+                createTime: new Date().getTime(),
+                updateTime: new Date().getTime()
               }, _info)
             }).then(res=>{
               this.setGlobalData({ id: res.data[0].id})
@@ -88,7 +88,7 @@ App({
   setGlobalData(data) {
     // 为了便于管理，应通过此方法修改全局变量
     Object.keys(data).map(key => {
-      this.globalData[key] = data[key]
+      this.globalData[key] =  data[key]
     })
     console.log('mutation', data);
     wx.setStorageSync('store', this.globalData)// 加入缓存

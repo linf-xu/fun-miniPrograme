@@ -25,6 +25,7 @@
   text-align: left;
   font-size: 14px;
   color: #666;
+  margin-bottom: 30rpx;
 }
 .tabWrap view{
   margin-right: 60rpx;

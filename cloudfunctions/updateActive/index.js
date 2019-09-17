@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
   try {
     return await db.collection('activityList').doc(event.id).update({
       // data 传入需要局部更新的数据
-      data: Object.assign({ updateTime: db.serverDate()},event.data)
+      data: Object.assign({ updateTime: new Date().getTime()},event.data)
     })
   } catch (e) {
     console.error(e)
