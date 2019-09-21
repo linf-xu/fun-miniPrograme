@@ -77,18 +77,10 @@ Page(Object.assign({
           })
           return
         }
+        console.log('[数据库] [查询记录] 成功: ', res)
         try{
           let acInfo = res.data[0],
-            // playmaker = { 
-            //   openid: acInfo._openid,
-            //   nickName: acInfo.nickName,
-            //   avatarUrl: acInfo.avatarUrl, 
-            //   realName: acInfo.realName
-            // }
           playmaker = acInfo.playmaker
-          acInfo.joins.map(item => {
-            item.updateTime = this.getDate(item.updateTime,'-')
-          })
           this.setData({
             acInfo,
             playmaker,
@@ -102,7 +94,7 @@ Page(Object.assign({
           if (acInfo.isEnd || nowStamp > acInfo.endTimeStamp) {
             this.setData({curStatus:'end'})
           }
-          console.log('[数据库] [查询记录] 成功: ', res)
+          
         }catch(e){
           console.log(e)
         }
@@ -200,9 +192,11 @@ Page(Object.assign({
           icon: 'success',
           duration: 2000
         })
-        wx.redirectTo({
-          url: '/pages/index/index'
-        })
+        setTimeout(()=>{
+          wx.redirectTo({
+            url: '/pages/index/index'
+          })
+        },2000)
       })
   },
   getUserInfo(res) {
@@ -225,8 +219,8 @@ Page(Object.assign({
       setTimeout(()=>{
         wx.navigateTo({
           url: '../myHome/index?needBack=1'
-        },1000)
-      })
+        })
+      },2000)
       return
     }
     let that = this
@@ -270,7 +264,7 @@ Page(Object.assign({
       openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
-      updateTime: new Date().getTime(),
+      updateTime: this.getDate(new Date().getTime(), '-'),
       realName: app.globalData.userInfo.realName
     })
     let joinIds = this.data.acInfo.joinIds + ',' + app.globalData.openid
@@ -403,8 +397,6 @@ Page(Object.assign({
   getDate(time, splitStr) {
     if (!time) return '';
 
-    // var date =getDate(time);
-    console.log(time)
     var date = time
     try{
       date = new Date(time)

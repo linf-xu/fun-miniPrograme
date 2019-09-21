@@ -5,7 +5,7 @@ const cloud = require('wx-server-sdk')
 
 // 初始化 cloud
 cloud.init({
-  env: 'fun-a1qgd'
+  env: 'prod-6jygs'
 })
 
 /**

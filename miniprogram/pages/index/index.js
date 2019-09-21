@@ -134,10 +134,8 @@ Page({
         title: '请先备注姓名'
       })
       setTimeout(() => {
-        wx.navigateTo({
-          url: '../myHome/index?needBack=1'
-        }, 1000)
-      })
+        wx.navigateTo({url: '../myHome/index?needBack=1'})
+      }, 2000)
       return
     }
     this.upadteBaomingDb(e.currentTarget.dataset.index)
@@ -150,7 +148,7 @@ Page({
       openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
       nickName: app.globalData.userInfo.nickName,
-      updateTime: new Date().getTime(),
+      updateTime: this.getDate(new Date().getTime(), '-'),
       realName: app.globalData.userInfo.realName
     })
     console.log(app.globalData.userInfo)
@@ -209,10 +207,8 @@ Page({
         title: '请先备注姓名'
       })
       setTimeout(()=>{
-        wx.navigateTo({
-          url: '../myHome/index?needBack=1'
-        },1000)
-      })
+        wx.navigateTo({url: '../myHome/index?needBack=1'})
+      }, 2000)
       return
     }
     wx.navigateTo({
@@ -223,6 +219,37 @@ Page({
     wx.navigateTo({
       url: '../myHome/index'
     })
+  },
+  getDate(time, splitStr) {
+    if (!time) return '';
+
+    var date = time
+    try{
+      date = new Date(time)
+    }catch(e){
+      console.log(e)
+    }
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (h < 10) h = "0" + h;
+    if (m < 10) m = "0" + m;
+    if (s < 10) s = "0" + s;
+
+    if (splitStr)
+      return y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+    else
+      return {
+        y: y,
+        M: M,
+        d: d
+      };
   },
   // 查看详情
   goDetail(e){

@@ -1,3 +1,4 @@
+
 // pages/newActivity.js
 var inputMixins = require("../../mixins/inputMixins.js")
 var app = getApp()
@@ -8,10 +9,6 @@ Page(Object.assign({
    * 页面的初始数据
    */
   data: {
-    avatarUrl:'',
-    nickName:'',
-    realName:'',
-    openid:'',
     title:'',
     name:'',
     address:'',
@@ -55,12 +52,12 @@ Page(Object.assign({
   init(){
     let userInfo = app.globalData.userInfo
     console.log(app.globalData)
-    this.setData({
-      openid: app.globalData.openid,
-      avatarUrl: userInfo.avatarUrl,
-      nickName: userInfo.nickName,
-      realName: userInfo.realName || ''
-    })
+    // this.setData({
+    //   openid: app.globalData.openid,
+    //   avatarUrl: userInfo.avatarUrl,
+    //   nickName: userInfo.nickName,
+    //   realName: userInfo.realName || ''
+    // })
     // 查询模板列表
     db.collection('tempList').get({
       success: res => {
@@ -160,23 +157,23 @@ Page(Object.assign({
       joinIds: '',
       imgList: [],
       playmaker:{
-        openid: this.data.openid,
-        avatarUrl: this.data.avatarUrl || '',
-        nickName: this.data.nickName || '',
-        realName: this.data.realName || ''
+        openid: app.globalData.openid,
+        avatarUrl: app.globalData.userInfo.avatarUrl || '',
+        nickName: app.globalData.userInfo.nickName || '',
+        realName: app.globalData.userInfo.realName || ''
       }
     }
     if (this.data.makerJoin){
       addObj.joins = [
         {
-          openid: this.data.openid,
-          avatarUrl: this.data.avatarUrl || '',
-          nickName: this.data.nickName || '',
-          realName: this.data.realName || '',
-          updateTime: new Date().getTime()
+          openid: app.globalData.openid,
+          avatarUrl: app.globalData.userInfo.avatarUrl || '',
+          nickName: app.globalData.userInfo.nickName || '',
+          realName: app.globalData.userInfo.realName || '',
+          updateTime: this.getDate(new Date().getTime())
         }
       ]
-      addObj.joinIds= this.data.openid
+      addObj.joinIds= app.globalData.openid
     }
     console.log(addObj)
     //插入activitylist
@@ -270,6 +267,37 @@ Page(Object.assign({
       duration: 2000
     })
     this.setData({isTemp:true})
+  },
+  getDate(time, splitStr='-') {
+    if (!time) return '';
+
+    var date = time
+    try{
+      date = new Date(time)
+    }catch(e){
+      console.log(e)
+    }
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (h < 10) h = "0" + h;
+    if (m < 10) m = "0" + m;
+    if (s < 10) s = "0" + s;
+
+    if (splitStr)
+      return y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+    else
+      return {
+        y: y,
+        M: M,
+        d: d
+      };
   },
 
   /**

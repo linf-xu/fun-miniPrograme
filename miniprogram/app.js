@@ -6,18 +6,16 @@ App({
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
+      // 线上环境fun-a1qgd  测试环境prod-6jygs
       wx.cloud.init({
         traceUser: true,
-        env: 'fun-a1qgd'
+        env: 'prod-6jygs'
       })
     }
     const db = wx.cloud.database()
     this.globalData = {
       openid:'',
-      userInfo:{},
-      nickName:'',
-      realName:'',
-      id:''
+      userInfo:{}
     }
     wx.cloud.callFunction({
       name: 'login',
@@ -45,10 +43,7 @@ App({
           console.log('getuserinfo from db')
           if (!userInfo){  //初始化
             this.setGlobalData({
-              userInfo: res.data[0], 
-              nickName: res.data[0].nickName, 
-              realName: res.data[0].realName,
-              id: res.data[0]._id
+              userInfo: res.data[0]
             })
           } 
         }
@@ -69,7 +64,7 @@ App({
                 updateTime: new Date().getTime()
               }, _info)
             }).then(res=>{
-              this.setGlobalData({ id: res.data[0].id})
+              this.setGlobalData({userInfo:Object.assign(this.globalData.userInfo,{ _id: res.data[0].id})})
             })
           }
         }
