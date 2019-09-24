@@ -15,7 +15,8 @@ Page({
     nickName:'',
     scrollTop:0,
     addTop:'',
-    activityTab:0
+    activityTab:0,
+    showTabBar:false,
   },
 
   /**
@@ -40,6 +41,7 @@ Page({
     app.updateUserInfo(res)
   },
   init(){
+    this.setData({showTabBar:true})
     if (app.globalData.userInfo.nickName){
       this.setData({
         nickName: app.globalData.userInfo.nickName

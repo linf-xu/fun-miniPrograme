@@ -1,30 +1,51 @@
 <!--index.wxml-->
-<view class="userinfo">
-  <text wx:if="{{nickName}}">欢迎</text>
-  <image class="avatar" src="{{avatarUrl}}"></image>
-  <button 
-    open-type="getUserInfo" 
-    bindgetuserinfo="getUserInfo"
-    class="nickName"
-  >{{nickName||'您还未登录，点击登录'}}</button>
-  <text wx:if="{{nickName}}" class="update" bindtap='update'>{{edit?'完成':'更新资料'}}</text>
-</view>
-<view wx:if="{{nickName}}" class="list realname">
-  <van-field
-    wx:if="{{edit}}"
-    value="{{realName}}"
-    name="realName"
-    clearable
-    autosize
-    focus="{{edit}}"
-    label="姓名"
-    placeholder="请填写您的姓名"
-    bindinput="inputgetName" 
-    />
-    <van-cell style="width:100%" wx:if="{{!edit&&realName}}" title="姓名" value="{{realName}}" />
-    <van-cell style="width:100%" wx:if="{{!edit&&!realName}}" title="姓名" value="请填写您的姓名" />
+<view class="userWrap">
+  <view class="bgBox">
+    <image class="mineBg" src="../../../../../images/home/mineBg.png"/>
+    <image class="bBg" src="../../../../../images/home/bBg.png"/>
   </view>
-  <view class="tips">
-    <view>建议填写真实姓名</view>
-    <view>会展示在您的微信昵称之后</view>
+  <view class="userinfo">
+    <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}"></image>
+    <image wx:else class="avatar" src="../../../../../images/tabBar/mine.png"></image>
+    <button 
+      open-type="getUserInfo" 
+      bindgetuserinfo="getUserInfo"
+      class="nickName"
+    >{{nickName||'您还未登录，点击登录'}}</button>
+    
+    <van-field
+      wx:if="{{edit}}"
+      value="{{realName}}"
+      name="realName"
+      clearable
+      input-align="center"
+      autosize
+      focus="{{edit}}"
+      placeholder="请填写您的姓名"
+      bindinput="inputgetName"
+      use-button-slot
+      custom-style="background: transparent"
+      >
+      <!-- <van-icon name="edit"/> -->
+      <van-button slot="button" size="small" type="primary"><van-icon bindtap='update' name="success" color="#44CBC2"/></van-button>
+    </van-field>
+    <view wx:else bindtap='update'>
+      {{realName||"请填写您的姓名"}}<van-icon name="edit"/>
+    </view>
+  </view>
+</view>
+  <view class="tabBarWrap">
+    <!-- <image class="mainBg" src="../../../../../images/tabBar/mainBg.png"/> -->
+    <!-- <view bindtap='addNew' class="addNew">
+      <image src="../../../../../images/tabBar/edit.png"/>
+      <view>发布活动</view>
+    </view> -->
+    <view class="tabBar">
+      <view bindtap='goHome'>
+        <image src="../../../../../images/tabBar/home.png"/>
+      </view>
+      <view>
+        <image src="../../../../../images/tabBar/mine_activity.png"/>
+      </view>
+    </view>
   </view>

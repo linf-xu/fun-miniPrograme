@@ -29,40 +29,67 @@
     <view 
       class='empty'
       wx:if="{{!pageLoading&&waitingList.length<1}}"
-      >
-        <image  src="../../../../../images/empty2.png"/>
-        <text >
-          暂时还没有进行中的活动 
-        </text>
-      <view class="empty" id="add">
-        <van-button 
-          size="large" 
-          type="primary" 
-          bind:click="addNew"
-        >
-          发起一个新的活动
-        </van-button>
+    >
+      <image  src="../../../../../images/home/empty.png"/>
+      <view >
+        当前还没有进行中的活动
+      </view>
+      <view>
+        快来发布新的活动邀请朋友来参加吧
       </view>
     </view>
 
     <!-- 进行中的活动 -->
-    <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper shadow5'>
-      <view class='cardHeader'>
-        <text class='title'>{{item.title}}</text>
+    <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
+      <!-- <view class='cardHeader'>
+        
         <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
         </text>
-      </view>
+      </view> -->
 
       <view class='cardContent'>
-        <view class='contentLeft'>
-          <view>活动项目:<text class='ml15'>{{item.name}}</text></view>
-          <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
+        <view class="itemMainWrap">
+          <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
+          <text>{{item.joins.length}}/{{item.joinNum}}</text>
+        </view>
+        <view class='contentRight'>
+          <view class='title'>{{item.title}}</view>
+          <view>
+            <image src="../../../../../images/home/item_1.png"/>
+            <text>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_2.png"/>
+            <text>{{item.address}} </text>
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_3.png"/>
+            <text>{{item.playmaker.nickName}}({{item.playmaker.realName}}) </text>
+          </view>
+          <!-- <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
             活动地点:<van-icon color="#576b95" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
+          </view> -->
+        </view>
+        
+      </view>
+      <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
+      <view class='joinsList van-hairline--top'>
+        <text>已报名:</text>
+        <view class='avatarWraper'>
+          <view>
+            <image 
+              wx:for="{{item.joins}}" 
+              wx:key="{{i}}" 
+              wx:for-item="twodata" 
+              class='avatar' 
+              src="{{twodata.avatarUrl}}"/>
           </view>
         </view>
+        <view class="block"></view>
+        <!-- <text class="ml15">已报名</text> -->
         <van-button 
           wx:if="{{item.curStatus=='wait'&&!item.isJoin}}"
-          class='wait contentRight' 
+          class='wait joinBtn' 
           size="small" 
           plain 
           hairline
@@ -72,64 +99,45 @@
         >
           立即报名
         </van-button>
-        <view class='contentRight going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名</view>
-        <view class='going contentRight' wx:else>
-          进行中
-          <image src="../../../../../images/going.png"/>
+        <view class='joinBtn going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名</view>
+        <view class='going joinBtn' wx:else>
+          进行中...
         </view>
-      </view>
-      <view>
-        活动时间:<text class='ml15'>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
-      </view>
-      <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
-      <view class='joinsList van-hairline--top'>
-        <text>已报名:</text>
-        <view class='avatarWraper ml15'>
-          <view>
-            <image 
-              wx:for="{{item.joins}}" 
-              wx:key="{{i}}" 
-              wx:for-item="twodata" 
-              class='avatar' 
-              src="{{twodata.avatarUrl}}"/>
-            </view>
-          </view> 
       </view>
     </view>
   </view>
   <!-- 往期活动 -->
   <view wx:else>
-    <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{endList}}" wx:key="{{index}}" class='cardWraper endList'>
-      <view class='cardHeader'>
-        <text class='title'>{{item.title}}</text>
-        <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
-        </text>
-      </view>
-
+    <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{endList}}" wx:key="{{index}}" class='cardWraper'>
       <view class='cardContent'>
-        <view class='contentLeft'>
-          <view>活动项目:<text class='ml15'>{{item.name}}</text></view>
-          <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
-            活动地点:<van-icon color="#576b95" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
-          </view>
+        <view class="itemMainWrap">
+          <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
+          <text>{{item.joins.length}}/{{item.joinNum}}</text>
         </view>
-        <van-button 
-          class='wait contentRight' 
-          size="small" 
-          plain 
-          hairline
-          disabled
-        >
-          {{item.curStatus=='end'?'已结束':'已取消'}}
-        </van-button>
-      </view>
-      <view>活动时间:
-        <text class='ml15'>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
+        <view class='contentRight'>
+          <view class='title'>{{item.title}}</view>
+          <view>
+            <image src="../../../../../images/home/item_1.png"/>
+            <text>{{item.startTime}} </text> <van-icon name="exchange"/> {{item.endTime}}
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_2.png"/>
+            <text>{{item.address}} </text>
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_3.png"/>
+            <text>{{item.playmaker.nickName}}({{item.playmaker.realName}}) </text>
+          </view>
+          <!-- <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
+            活动地点:<van-icon color="#576b95" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
+          </view> -->
+        </view>
+        
       </view>
       <view wx:if="{{item.remarks}}" class='cardBottom'>{{item.remarks}}</view>
       <view class='joinsList van-hairline--top'>
-        <text>参与人员:</text>
-        <view class='avatarWraper ml15'>
+        <text>已报名:</text>
+        <view class='avatarWraper'>
           <view>
             <image 
               wx:for="{{item.joins}}" 
@@ -137,21 +145,49 @@
               wx:for-item="twodata" 
               class='avatar' 
               src="{{twodata.avatarUrl}}"/>
-            </view>
-          </view> 
+          </view>
+        </view>
+        <view class="block"></view>
+        <!-- <text class="ml15">已报名</text> -->
+        <van-button 
+          wx:if="{{item.curStatus=='wait'&&!item.isJoin}}"
+          class='wait joinBtn' 
+          size="small" 
+          plain 
+          hairline
+          type="primary" 
+          catchtap='baoming'
+          data-index='{{index}}'
+        >
+          立即报名
+        </van-button>
+        <view class='joinBtn going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名</view>
+        <view class='going joinBtn' wx:elif="{{item.curStatus=='going'}}">
+          进行中...
+        </view>
+        <view class='end joinBtn' wx:elif="{{item.curStatus=='end'}}">
+          已结束
+        </view>
+        <view class='cancel joinBtn' wx:elif="{{item.curStatus=='cancel'}}">
+          已取消
+        </view>
       </view>
     </view>
   </view>
-  
-  
-  
-
-  <!-- 已结束的活动 -->
-  
-  <!-- 发起活动浮窗按钮 -->
-  <view class="floatDiv">
-    <van-icon name="plus" wx:if="{{waitingList.length>0}}" bindtap='addNew' class='floatIcon shadow5'/>
-    <van-icon name="user-o" bindtap='goHome' class='floatIcon shadow5'/>
+  <view class="tabBarWrap">
+    <image class="mainBg" src="../../../../../images/tabBar/mainBg.png"/>
+    <view bindtap='addNew' class="addNew">
+      <image src="../../../../../images/tabBar/edit.png"/>
+      <view>发布活动</view>
+    </view>
+    <view class="tabBar">
+      <view>
+        <image src="../../../../../images/tabBar/home_activity.png"/>
+      </view>
+      <view bindtap='goHome'>
+        <image src="../../../../../images/tabBar/mine.png"/>
+      </view>
+    </view>
   </view>
 </view>
 <van-toast id="van-toast" />

@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "van-field": "../../ui/field/index",
-    "van-cell": "../../ui/cell/index"
+    "van-cell": "../../ui/cell/index",
+    "van-icon": "../../ui/icon/index"
   }
 }
