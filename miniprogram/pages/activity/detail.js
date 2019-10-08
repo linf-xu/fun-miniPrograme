@@ -464,7 +464,8 @@ Page(Object.assign({
       title = '我发起了' + this.data.acInfo.title + '，快来参加吧' + this.data.acInfo.joins.length + ' /' + this.data.acInfo.joinNum
     }
     return {
-      title: title
+      title: title,
+      path: '/pages/index/index'
     }
   }
 }, inputMixins))

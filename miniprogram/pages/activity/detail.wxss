@@ -32,7 +32,7 @@
   align-items: center;
 }
 .edit{
-  color: #07c160;
+  color: #44CBC2;
 }
 .cancel{
   color: #ff976a;

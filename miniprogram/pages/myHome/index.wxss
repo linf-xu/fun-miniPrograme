@@ -45,7 +45,7 @@
   font-weight: bold;
 }
 .update{
-  color: #07c160;
+  color: #44CBC2;
   right: 15px;
   position: absolute;
 }

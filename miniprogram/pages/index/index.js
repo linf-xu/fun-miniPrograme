@@ -123,6 +123,7 @@ Page({
   // 报名
   baoming(e){
     console.log(e)
+    console.log('bbbbbb')
     if(!app.globalData.userInfo.nickName){
       wx.showToast({
         icon: 'none',
@@ -163,6 +164,8 @@ Page({
         updateTime: new Date().getTime(),
       }
     }
+    let acInfo = this.data.waitingList[index]
+    let shareTitle = '我报名' + acInfo.title + '了，快来参加吧。' + acInfo.joins.length + ' /' + (acInfo.joinNum*1+1)
     let _this = this
     wx.cloud.callFunction({
       // 云函数名称
@@ -172,11 +175,23 @@ Page({
       success(res) {
         console.log(res)
         _this.init()
-        wx.showToast({
-          title: '报名成功',
-          icon: 'success',
-          duration: 2000
-        })
+        _this.setData({shareTitle})
+        Dialog.confirm({
+          title: '标题',
+          message: '报名成功，发送报名消息到群里吧',
+          confirmButtonText: "好的",
+          cancelButtonText:"偷偷报名",
+          confirmButtonOpenType:"share"
+        }).then(() => {
+          
+        }).catch(() => {
+          // on cancel
+        });
+        // wx.showToast({
+        //   title: '报名成功',
+        //   icon: 'success',
+        //   duration: 2000
+        // })
       },
       fail: console.error
     })
@@ -323,9 +338,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (shareMsg) {
     return {
-      title: '里边有好玩的活动！'
+      title: shareMsg || '里边有好玩的活动！'
     }
   }
 })

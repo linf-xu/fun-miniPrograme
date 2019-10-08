@@ -9,7 +9,7 @@ App({
       // 线上环境fun-a1qgd  测试环境prod-6jygs
       wx.cloud.init({
         traceUser: true,
-        env: 'prod-6jygs'
+        env: 'fun-a1qgd'
       })
     }
     const db = wx.cloud.database()

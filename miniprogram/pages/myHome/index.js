@@ -80,6 +80,7 @@ Page(Object.assign({
     })
   },
   goHome() {
+    console.log('home')
     wx.navigateTo({
       url: '../index/index'
     })

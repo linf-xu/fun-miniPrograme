@@ -40,14 +40,14 @@
     </view>
 
     <!-- 进行中的活动 -->
-    <view bindtap='goDetail' data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
+    <view data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
       <!-- <view class='cardHeader'>
         
         <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
         </text>
       </view> -->
 
-      <view class='cardContent'>
+      <view class='cardContent' bindtap='goDetail'>
         <view class="itemMainWrap">
           <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
           <text>{{item.joins.length}}/{{item.joinNum}}</text>
@@ -87,19 +87,15 @@
         </view>
         <view class="block"></view>
         <!-- <text class="ml15">已报名</text> -->
-        <van-button 
+        <view 
           wx:if="{{item.curStatus=='wait'&&!item.isJoin}}"
           class='wait joinBtn' 
-          size="small" 
-          plain 
-          hairline
-          type="primary" 
-          catchtap='baoming'
+          bindtap='baoming'
           data-index='{{index}}'
         >
           立即报名
-        </van-button>
-        <view class='joinBtn going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">已报名</view>
+        </view>
+        <view class='joinBtn going ready' wx:elif="{{item.curStatus=='wait'&&item.isJoin}}">报名成功</view>
         <view class='going joinBtn' wx:else>
           进行中...
         </view>
@@ -191,3 +187,4 @@
   </view>
 </view>
 <van-toast id="van-toast" />
+<van-dialog id="van-dialog" />

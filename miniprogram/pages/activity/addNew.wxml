@@ -8,6 +8,7 @@
   class="custom-class" 
   size="large" 
   plain 
+  color="#44CBC2"
   type="success">{{item.tempName}}</van-tag>
 </view>
 <h2 class="first">手动填写</h2>
@@ -84,7 +85,7 @@
     title="添加为模板"
     checked="{{ isTemp }}"
     bind:change="isTemp"
-    active-color="#07c160"
+    active-color="#44CBC2"
   />
 
   <van-field
@@ -101,7 +102,7 @@
     title="我也参加"
     checked="{{ makerJoin }}"
     bind:change="makerJoin"
-    active-color="#07c160"
+    active-color="#44CBC2"
     class="van-cell"
   />
 </van-cell-group>
@@ -110,9 +111,10 @@
   <van-button
     size="large"
     :loading="submit" 
-    loading-text="提交中" 
-    plaine type="primary"
+    loading-text="提交中"
+    type="primary"
     bindtap='submit'
+    color="#44CBC2"
   >
     <i-icon type="add" size="16" color="#fff" />
     确认发起
