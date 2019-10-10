@@ -24,9 +24,11 @@ Page({
    */
   onLoad: function(options) {
     app.$watch('userInfo', (val, old) => {
+      console.log('watch userInfo index')
       this.init()
     })
     app.$watch('nickName', (val, old) => {
+      console.log('watch nickName index')
       if (app.globalData.userInfo.nickName) {
         this.setData({
           nickName: app.globalData.userInfo.nickName
@@ -270,6 +272,7 @@ Page({
   },
   // 查看详情
   goDetail(e){
+    console.log(e)
     wx.navigateTo({
       url: '../activity/detail?id='+e.currentTarget.dataset.id
     })

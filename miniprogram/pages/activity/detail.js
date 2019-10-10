@@ -25,10 +25,13 @@ Page(Object.assign({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     app.$watch('userInfo', (val, old) => {
+      console.log('watch userInfo detail')
       this.init()
     })
     app.$watch('nickName', (val, old) => {
+      console.log('watch nickName detail')
       if (app.globalData.userInfo.nickName) {
         this.setData({
           nickName: app.globalData.userInfo.nickName

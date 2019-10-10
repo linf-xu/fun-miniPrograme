@@ -28,6 +28,7 @@ App({
     })
   },
   updateUserInfo(userInfo){
+    console.log('updateUserInfo userInfo:',userInfo)
     if (userInfo){
       let _info = JSON.parse(userInfo.detail.rawData)
       this.setGlobalData({ userInfo: _info, nickName: _info.nickName, realName: _info.realName })
@@ -38,7 +39,7 @@ App({
     }).get({
       
       success: res => {
-        console.log('[数据库] [查询记录] 成功: ', res)
+        console.log('app.js[数据库] [查询记录] 成功: ', res)
         if (res.data.length > 0){
           console.log('getuserinfo from db')
           if (!userInfo){  //初始化
@@ -52,19 +53,28 @@ App({
           //用户未注册到数据库，获取用户授权并记录到数据库中
             //更新
           if (res.data.length > 0){
+            console.log('updateUserInfo update')
             db.collection('user').doc(this.globalData.userInfo._id).update({
               data: Object.assign({
                 updateTime: new Date().getTime()
               }, _info)
             })
           }else{//添加
+            console.log('updateUserInfo add')
             db.collection('user').add({
               data: Object.assign({
                 createTime: new Date().getTime(),
                 updateTime: new Date().getTime()
               }, _info)
-            }).then(res=>{
-              this.setGlobalData({userInfo:Object.assign(this.globalData.userInfo,{ _id: res.data[0].id})})
+            }).then(_res=>{
+              console.log(_res)
+              this.setGlobalData({userInfo:Object.assign(this.globalData.userInfo,{ _id: _res.id})})
+            }).catch(_err => {
+              wx.showToast({
+                icon: 'none',
+                title: '新增记录失败'
+              })
+              console.error('[数据库] [新增记录] 失败：', _err)
             })
           }
         }

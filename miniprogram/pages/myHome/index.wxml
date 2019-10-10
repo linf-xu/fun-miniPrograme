@@ -13,24 +13,26 @@
       class="nickName"
     >{{nickName||'您还未登录，点击登录'}}</button>
     
-    <van-field
-      wx:if="{{edit}}"
-      value="{{realName}}"
-      name="realName"
-      clearable
-      input-align="center"
-      autosize
-      focus="{{edit}}"
-      placeholder="请填写您的姓名"
-      bindinput="inputgetName"
-      use-button-slot
-      custom-style="background: transparent"
-      >
-      <!-- <van-icon name="edit"/> -->
-      <van-button slot="button" size="small" type="primary"><van-icon bindtap='update' name="success" color="#44CBC2"/></van-button>
-    </van-field>
-    <view wx:else bindtap='update'>
-      {{realName||"请填写您的姓名"}}<van-icon name="edit"/>
+    <view wx:if="{{nickName}}">
+      <van-field
+        wx:if="{{edit}}"
+        value="{{realName}}"
+        name="realName"
+        clearable
+        input-align="center"
+        autosize
+        focus="{{edit}}"
+        placeholder="请填写您的姓名"
+        bindinput="inputgetName"
+        use-button-slot
+        custom-style="background: transparent"
+        >
+        <!-- <van-icon name="edit"/> -->
+        <van-button slot="button" size="small" type="primary"><van-icon bindtap='update' name="success" color="#44CBC2"/></van-button>
+      </van-field>
+      <view wx:else bindtap='update'>
+        {{realName||"请填写您的姓名"}}<van-icon name="edit"/>
+      </view>
     </view>
   </view>
 </view>

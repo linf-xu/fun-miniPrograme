@@ -27,9 +27,11 @@ Page(Object.assign({
       })
     }
     app.$watch('userInfo', (val, old) => {
+      console.log('watch userInfo myhome')
       this.init()
     })
     app.$watch('nickName', (val, old) => {
+      console.log('watch nickName myhome')
       if (app.globalData.userInfo.nickName) {
         this.setData({
           nickName: app.globalData.userInfo.nickName
@@ -42,8 +44,8 @@ Page(Object.assign({
     console.log(app.globalData)
     this.setData({
       openid: app.globalData.openid,
-      avatarUrl: userInfo.avatarUrl,
-      nickName: userInfo.nickName,
+      avatarUrl: userInfo.avatarUrl || '',
+      nickName: userInfo.nickName || '',
       realName: userInfo.realName || ''
     })
   },
@@ -54,6 +56,13 @@ Page(Object.assign({
     if(!this.data.edit){
       this.setData({ edit:true})
       return
+    }
+    console.log(app.globalData.userInfo)
+    if(!app.globalData.userInfo._id){
+      wx.showToast({
+        icon: 'none',
+        title: '请重新进入'
+      })
     }
     db.collection('user').doc(app.globalData.userInfo._id).update({
       data: {
@@ -81,9 +90,7 @@ Page(Object.assign({
   },
   goHome() {
     console.log('home')
-    wx.navigateTo({
-      url: '../index/index'
-    })
+    wx.navigateBack({ delta : 2})
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

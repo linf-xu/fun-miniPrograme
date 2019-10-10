@@ -40,14 +40,14 @@
     </view>
 
     <!-- 进行中的活动 -->
-    <view data-id='{{item._id}}' wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
+    <view wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
       <!-- <view class='cardHeader'>
         
         <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
         </text>
       </view> -->
 
-      <view class='cardContent' bindtap='goDetail'>
+      <view class='cardContent' bindtap='goDetail' data-id='{{item._id}}'>
         <view class="itemMainWrap">
           <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
           <text>{{item.joins.length}}/{{item.joinNum}}</text>
