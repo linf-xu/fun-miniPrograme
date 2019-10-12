@@ -168,6 +168,7 @@ Page({
     }
     let acInfo = this.data.waitingList[index]
     let shareTitle = '我报名' + acInfo.title + '了，快来参加吧。' + acInfo.joins.length + ' /' + (acInfo.joinNum*1+1)
+    console.log('updateActive',_data)
     let _this = this
     wx.cloud.callFunction({
       // 云函数名称

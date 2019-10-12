@@ -247,7 +247,7 @@ Page(Object.assign({
     console.log('cancel')
     let joins = this.data.acInfo.joins
     let joinidsArr = this.data.acInfo.joinIds.split(',')
-    let index = joinidsArr.findIndex(item => { item == app.globalData.openid})
+    let index = joinidsArr.findIndex(item => { return item == app.globalData.openid})
     joins.splice(index, 1)
     joinidsArr.splice(index, 1)
     let joinIds = joinidsArr.join(',')
