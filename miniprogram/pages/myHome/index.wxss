@@ -55,7 +55,36 @@
   color: #999;
   text-align: center
 }
-
+.gohome{
+  color: #fff;
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+  z-index: 9;
+}
+/* 瀑布流 */
+.imglist{
+  /* display: flex; */
+}
+.imglist>view{
+  width: 50%;
+  float: left;
+}
+/* .leftList{
+  display: flex;
+  width: 375rpx;
+  flex-direction: column;
+} */
+.leftList .image{
+  width: 330rpx;
+  min-height: 10rpx;
+  margin: 15rpx 15rpx 15rpx 30rpx;
+}
+.rightList .image{
+  width: 330rpx;
+  min-height: 10rpx;
+  margin: 15rpx 30rpx 15rpx 15rpx;
+}
 /* tabvar */
 
 .tabBarWrap{

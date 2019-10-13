@@ -205,6 +205,7 @@ Page(Object.assign({
           createTime: new Date().getTime(),
           updateTime: new Date().getTime(),
           role: 'playmaker',
+          activityTitle: this.data.title,
           action: 'create'
         }
       })

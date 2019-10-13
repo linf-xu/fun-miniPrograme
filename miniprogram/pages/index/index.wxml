@@ -165,7 +165,7 @@
           已结束
         </view>
         <view class='cancel joinBtn' wx:elif="{{item.curStatus=='cancel'}}">
-          已取消
+          活动取消
         </view>
       </view>
     </view>

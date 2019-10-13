@@ -52,8 +52,8 @@ Page({
     console.log('init',app.globalData)
     if (!app.globalData.openid) return
     const db = wx.cloud.database()
-    // 查询当前用户所有的 counters
-    db.collection('activityList').orderBy('updateTime', 'desc').where({
+    // 查询 activityList
+    db.collection('activityList').orderBy('createTime', 'desc').where({
       isStart: true
     }).get({
       success: res => {
@@ -67,10 +67,10 @@ Page({
             if (item.joinIds.indexOf(app.globalData.openid) > -1) {
               item.isJoin = true
             }
-            if (item.isStart && nowStamp > item.startTimeStamp && nowStamp < item.endTimeStamp){
+            if (item.curStatus != 'cancel' && item.isStart && nowStamp > item.startTimeStamp && nowStamp < item.endTimeStamp){
               item.curStatus = 'going'
             }
-            if (item.isStart && nowStamp > item.endTimeStamp) {
+            if (item.curStatus != 'cancel' && item.isStart && nowStamp > item.endTimeStamp) {
               item.curStatus = 'end'
             }
           })
@@ -83,7 +83,7 @@ Page({
           return item.curStatus == 'wait' || item.curStatus == 'going'
         })
         let endList = acList.filter(item => {
-          return item.isEnd || item.curStatus == 'end'
+          return item.isEnd || item.curStatus == 'end' || item.curStatus == 'cancel'
         })
         this.setData({
           waitingList,
@@ -205,6 +205,7 @@ Page({
           createTime: new Date().getTime(),
           updateTime: new Date().getTime(),
           activityId: this.data.waitingList[index]._id,
+          activityTitle: this.data.waitingList[index].title,
           role:'join',
           action:'add'
         }

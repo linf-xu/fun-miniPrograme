@@ -195,6 +195,18 @@ Page(Object.assign({
           icon: 'success',
           duration: 2000
         })
+        //插入活动record表
+        db.collection('record')
+          .add({
+            data: {
+              createTime: new Date().getTime(),
+              updateTime: new Date().getTime(),
+              activityId: this.data.id,
+              activityTitle: this.data.title,
+              role: 'playmaker',
+              action: 'cancel'
+            }
+          })
         setTimeout(()=>{
           wx.redirectTo({
             url: '/pages/index/index'
@@ -259,6 +271,18 @@ Page(Object.assign({
         duration: 2000
       })
     })
+    //插入活动record表
+    db.collection('record')
+      .add({
+        data: {
+          createTime: new Date().getTime(),
+          updateTime: new Date().getTime(),
+          activityId: this.data.id,
+          activityTitle: this.data.title,
+          role: 'join',
+          action: 'cancel'
+        }
+      })
   },
   upadteBaomingDb() {
     //更新活动list表
@@ -287,6 +311,7 @@ Page(Object.assign({
           createTime: new Date().getTime(),
           updateTime: new Date().getTime(),
           activityId: this.data.id,
+          activityTitle: this.data.title,
           role: 'join',
           action:'add'
         }
@@ -304,30 +329,57 @@ Page(Object.assign({
         wx.showLoading({
           title: '上传中。。。',
         })
-        // 将图片上传至云存储空间
-        wx.cloud.uploadFile({
-          // 指定上传到的云路径
-          cloudPath: timestamp + '.png',
-          // 指定要上传的文件的小程序临时文件路径
-          filePath: chooseResult.tempFilePaths[0],
-          // 成功回调
-          success: res => {
-            console.log('上传成功', res)
-            wx.hideLoading()
-            wx.showToast({
-              title: '上传图片成功',
+        wx.getImageInfo({
+          src: chooseResult.tempFilePaths[0],
+          success: (_res) => {
+            let ratioheight = Math.round(165 * _res.height / _res.width)
+            console.log(_res.width)
+            console.log(_res.height)
+            console.log(ratioheight)
+            // 将图片上传至云存储空间
+            wx.cloud.uploadFile({
+              // 指定上传到的云路径
+              cloudPath: timestamp + '.png',
+              // 指定要上传的文件的小程序临时文件路径
+              filePath: chooseResult.tempFilePaths[0],
+              // 成功回调
+              success: res => {
+                console.log('上传成功', res)
+                wx.hideLoading()
+                wx.showToast({
+                  title: '上传图片成功',
+                })
+                if (res.fileID) {
+                  try{
+                  let _list = this.data.imgList
+                  _list.unshift(res.fileID)
+                  console.log(_list)
+                  this.setData({
+                    imgList: _list
+                  })
+                  this.update({ imgList: _list })
+                  //插入imglist表
+                  console.log(ratioheight)
+                  db.collection('imgList')
+                    .add({
+                      data: {
+                        ratioheight,
+                        createTime: new Date().getTime(),
+                        updateTime: new Date().getTime(),
+                        fileID: res.fileID,
+                        openid: app.globalData.openid,
+                        avatarUrl: app.globalData.userInfo.avatarUrl,
+                        nickName: app.globalData.userInfo.nickName,
+                        realName: app.globalData.userInfo.realName
+                      }
+                    })
+                  } catch (e) { console.log(e) }
+                }
+              },
             })
-            if (res.fileID) {
-              let _list = this.data.imgList
-              _list.unshift(res.fileID)
-              console.log(_list)
-              this.setData({
-                imgList: _list
-              })
-              this.update({ imgList: _list})
-            }
-          },
+          }
         })
+        
       },
     })
   },

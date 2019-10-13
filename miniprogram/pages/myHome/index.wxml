@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<text bindtap='goHome' class="gohome">首页</text>
 <view class="userWrap">
   <view class="bgBox">
     <image class="mineBg" src="../../../../../images/home/mineBg.png"/>
@@ -36,12 +37,31 @@
     </view>
   </view>
 </view>
-  <view class="tabBarWrap">
-    <!-- <image class="mainBg" src="../../../../../images/tabBar/mainBg.png"/> -->
-    <!-- <view bindtap='addNew' class="addNew">
-      <image src="../../../../../images/tabBar/edit.png"/>
-      <view>发布活动</view>
-    </view> -->
+<view>
+{{leftImglist.lenght}}
+</view>
+<view class="imglist">
+  <view class="leftList">
+    <image 
+      wx:for="{{leftImglist}}" 
+      wx:key="{{index}}" 
+      onload="onload" 
+      mode='widthFix' 
+      src="{{item.fileID}}" 
+      class="{{index==leftImglist.length-1?'leftLast image':'image'}}" >
+    </image>
+  </view>
+  <view class="rightList">
+    <image  
+      wx:for="{{rightImglist}}" 
+      wx:key="{{index}}" 
+      mode='widthFix' 
+      src="{{item.fileID}}" 
+      class="{{index==rightImglist.length-1?'rightLast image':'image'}}">
+    </image>
+  </view>
+</view>
+  <!-- <view class="tabBarWrap">
     <view class="tabBar">
       <view bindtap='goHome'>
         <image src="../../../../../images/tabBar/home.png"/>
@@ -50,4 +70,4 @@
         <image src="../../../../../images/tabBar/mine_activity.png"/>
       </view>
     </view>
-  </view>
+  </view> -->
