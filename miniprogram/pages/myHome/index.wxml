@@ -61,6 +61,7 @@
     </image>
   </view>
 </view>
+
   <!-- <view class="tabBarWrap">
     <view class="tabBar">
       <view bindtap='goHome'>
