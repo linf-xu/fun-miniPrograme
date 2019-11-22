@@ -23,60 +23,24 @@ App({
         console.log('云函数获取到的openid: ', res.result)
         this.setGlobalData({ openid: res.result.openid })
         this.setGlobalData({ userInfo: { _openid: res.result.openid} })
-        this.updateUserInfo()
+        this.getUserInfoByOpenid(res.result.openid)
       }
     })
   },
-  updateUserInfo(userInfo){
-    console.log('updateUserInfo userInfo:',userInfo)
-    if (userInfo){
-      let _info = JSON.parse(userInfo.detail.rawData)
-      this.setGlobalData({ userInfo: _info, nickName: _info.nickName, realName: _info.realName })
-    }
+  getUserInfoByOpenid(openid){
     const db = wx.cloud.database()
     db.collection('user').where({
-      _openid: this.globalData.openid
+      _openid: openid
     }).get({
-      
       success: res => {
-        console.log('app.js[数据库] [查询记录] 成功: ', res)
-        if (res.data.length > 0){
-          console.log('getuserinfo from db')
-          if (!userInfo){  //初始化
-            this.setGlobalData({
-              userInfo: res.data[0]
-            })
-          } 
-        }
-        if (userInfo) {//用户点击获取授权
-          let _info = JSON.parse(userInfo.detail.rawData)
-          //用户未注册到数据库，获取用户授权并记录到数据库中
-            //更新
-          if (res.data.length > 0){
-            console.log('updateUserInfo update')
-            db.collection('user').doc(this.globalData.userInfo._id).update({
-              data: Object.assign({
-                updateTime: new Date().getTime()
-              }, _info)
-            })
-          }else{//添加
-            console.log('updateUserInfo add')
-            db.collection('user').add({
-              data: Object.assign({
-                createTime: new Date().getTime(),
-                updateTime: new Date().getTime()
-              }, _info)
-            }).then(_res=>{
-              console.log(_res)
-              this.setGlobalData({userInfo:Object.assign(this.globalData.userInfo,{ _id: _res.id})})
-            }).catch(_err => {
-              wx.showToast({
-                icon: 'none',
-                title: '新增记录失败'
-              })
-              console.error('[数据库] [新增记录] 失败：', _err)
-            })
-          }
+        console.log('通过openid查询userInfo 成功: ', res)
+        if (res.data.length > 0) {
+          console.log('数据库中存在此openid，setUserinfo赋值给GlobalData')
+          this.setGlobalData({
+            userInfo: res.data[0]
+          })
+        }else{
+          console.log('数据库中不存在此openid，显示登录按钮')
         }
       },
       fail: err => {
@@ -84,8 +48,39 @@ App({
           icon: 'none',
           title: '查询记录失败'
         })
-        console.error('[数据库] [查询记录] 失败：', err)
+        console.error('通过openid查询userInfo 失败：', err)
       }
+    })
+  },
+  userLogin(userInfo){
+    const db = wx.cloud.database()
+    console.log('用户登录', userInfo)
+    let _info = JSON.parse(userInfo.detail.rawData)
+    db.collection('user').add({
+      data: Object.assign({
+        createTime: new Date().getTime(),
+        updateTime: new Date().getTime()
+      }, _info)
+    }).then(_res => {
+      console.log('新用户写入user表成功,赋值globaldata',_res)
+      this.setGlobalData({ userInfo: Object.assign({}, _info, { _id: _res._id }) })
+    }).catch(_err => {
+      wx.showToast({
+        icon: 'none',
+        title: '新增记录失败'
+      })
+      console.error('[数据库] [新增记录] 失败：', _err)
+    })
+  },
+  updateUserInfo(userInfo){
+    console.log('用户更新微信信息赋值globaldata:',userInfo)
+    let _info = JSON.parse(userInfo.detail.rawData)
+    this.setGlobalData({ userInfo: _info})
+    const db = wx.cloud.database()
+    db.collection('user').doc(this.globalData.userInfo._id).update({
+      data: Object.assign({
+        updateTime: new Date().getTime()
+      }, _info)
     })
   },
   watchCallBack: {},

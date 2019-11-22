@@ -15,44 +15,17 @@ Page(Object.assign({
     edit:false,
     needBack:0,
     leftListH:0,
-    leftLastH:0,
     rightListH:0,
-    rightLastH:0,
-    leftImglist:[
-      {    fileID:"https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=ad628627aacc7cd9e52d32d909032104/32fa828ba61ea8d3fcd2e9ce9e0a304e241f5803.jpg"
-      },
-      {
-        fileID: "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a9e671b9a551f3dedcb2bf64a4eff0ec/4610b912c8fcc3cef70d70409845d688d53f20f7.jpg"
-      },
-      {
-        fileID: "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=907f6e689ddda144c5096ab282b6d009/dc54564e9258d1092f7663c9db58ccbf6c814d30.jpg"
-      }, 
-      {
-        fileID: "https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=0c78105b888ba61ec0eece2f713597cc/0e2442a7d933c8956c0e8eeadb1373f08202002a.jpg"
-      },
-      {
-        fileID: "https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=92afee66fd36afc3110c39658318eb85/908fa0ec08fa513db777cf78376d55fbb3fbd9b3.jpg"
-      },
-      {
-        fileID: "https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=d985fb87d81b0ef473e89e5eedc551a1/b151f8198618367aa7f3cc7424738bd4b31ce525.jpg"
-      },],
-    rightImglist: [
-      {
-        fileID: "https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=d985fb87d81b0ef473e89e5eedc551a1/b151f8198618367aa7f3cc7424738bd4b31ce525.jpg"
-      },
-      {
-        fileID: "https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=0cc74ef9a3773912db268361c8188675/9922720e0cf3d7ca810f3732f81fbe096a63a9fd.jpg"
-      },
-      {
-        fileID: "https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=d985fb87d81b0ef473e89e5eedc551a1/b151f8198618367aa7f3cc7424738bd4b31ce525.jpg"
-      },
-    ]
+    leftImgList:[],
+    rightImgList: [],
+    imgList:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getImgList()
     if (options.needBack == 1){
       this.setData({
         needBack:1,
@@ -70,14 +43,6 @@ Page(Object.assign({
           nickName: app.globalData.userInfo.nickName
         })
       }
-    })
-    this.$watch('rightListH', (val, old) => {
-      console.log('watch rightListH', val, old)
-      this.changeLeftRight()
-    })
-    this.$watch('leftListH', (val, old) => {
-      console.log('watch leftListH', val, old)
-      this.changeLeftRight()
     })
   },
   watchCallBack: {},
@@ -114,12 +79,47 @@ Page(Object.assign({
       nickName: userInfo.nickName || '',
       realName: userInfo.realName || ''
     })
-    // console.log(this.data.leftImglist.length)
-    // setTimeout(()=>{
-    //   this.changeLeftRight()
-    // },2000)
+    console.log(this.data.imgList)
+    // this.getImgList()
   },
-  onload(){
+  getImgList(){
+    const db = wx.cloud.database()
+    // 查询 imgList
+    db.collection('imgList').get({
+      success: res => {
+        console.log('获取图片列表成成功',res)
+        try {
+          let _list = res.data
+          let _leftH = this.data.leftListH
+          let _leftList = this.data.leftImgList||[]
+          let _rightH = this.data.rightListH
+          let _rightList = this.data.rightImgList||[]
+          console.log(_leftH,_leftList,_rightH,_rightList)
+          for(let i=0;i<_list.length;i++){
+            console.log(_leftH, _rightH)
+            if(_leftH>_rightH){
+              _rightList.push(_list[i])
+              _rightH += _list[i].ratioheight
+            }else{
+              _leftList.push(_list[i])
+              _leftH += _list[i].ratioheight
+            }
+          }
+          console.log(_leftH, _leftList, _rightH, _rightList)
+
+          this.setData({
+            leftListH: _leftH,
+            rightListH: _rightH,
+            leftImgList: _leftList,
+            rightImgList: _rightList
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
+  },
+  imgonload(){
     console.log('onload', new Date().getTime())
     let leftListH = 0
     let leftLastH = 0
@@ -142,22 +142,19 @@ Page(Object.assign({
       this.setData({ rightLastH })
     }).exec()
   },
-  changeLeftRight(){
-    if (this.data.leftListH - this.data.rightListH > this.data.leftLastH) {
-      console.log('lefttoright')
-      let rightImglist = this.data.rightImglist
-      rightImglist.push(this.data.leftImglist[this.data.leftImglist.length - 1])
-      let leftImglist = this.data.leftImglist
-      leftImglist.splice(this.data.leftImglist.length - 1, 1)
-      this.setData({ rightImglist, leftImglist })
-    } 
-  },
   getUserInfo(res) {
-    app.updateUserInfo(res)
+    app.userLogin(res)
   },
   update(){
     if(!this.data.edit){
       this.setData({ edit:true})
+      return
+    }
+    if (!this.data.realName){
+      wx.showToast({
+        icon: 'none',
+        title: '请输入备注姓名'
+      })
       return
     }
     console.log(app.globalData.userInfo)
@@ -166,6 +163,7 @@ Page(Object.assign({
         icon: 'none',
         title: '请重新进入'
       })
+      return
     }
     db.collection('user').doc(app.globalData.userInfo._id).update({
       data: {

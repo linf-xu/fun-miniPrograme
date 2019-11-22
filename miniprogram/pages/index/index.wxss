@@ -82,6 +82,7 @@ section{
   font-size: 14px;
   margin-bottom: 20rpx;
   color: #495060;
+  position: relative;
 }
 .cardHeader{
   display: flex;
@@ -273,4 +274,9 @@ section{
   width: 40rpx;
   margin-top: 15rpx;
   margin-bottom: 5rpx;
+}
+.moremore{
+  position: absolute;
+  top: 35%;
+  right: 30rpx;
 }

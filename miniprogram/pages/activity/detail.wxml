@@ -23,13 +23,14 @@
 </van-cell-group>
 
 <van-cell-group border="{{false}}">
-  <van-cell title="活动标题" value="{{acInfo.title}}" />
+  <van-cell title-width="150rpx" title="活动标题" value="{{acInfo.title}}" />
   <van-cell title="活动项目" value="{{acInfo.name}}" />
   <van-cell title="活动地点" 
     value="{{acInfo.address}}" 
     isLink
     data-latitude='{{acInfo.latitude}}' 
     data-longitude='{{acInfo.longitude}}'
+    bind:click="viewMap"
     />
   <van-cell title="活动时间" value="{{time}}" custom-class="list" value-class="right"/>
   <van-cell wx:if="{{!edit}}" title="备注" value="{{acInfo.remarks||'空'}}" />

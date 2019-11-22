@@ -17,6 +17,7 @@ Page({
     addTop:'',
     activityTab:0,
     showTabBar:false,
+    shareTitle:''
   },
 
   /**
@@ -39,8 +40,10 @@ Page({
   getData(){
     
   },
-  getUserInfo(res){
-    app.updateUserInfo(res)
+  userLogin(res){
+    console.log(app.globalData)
+    app.userLogin(res)
+    console.log(app.globalData)
   },
   init(){
     this.setData({showTabBar:true})
@@ -147,8 +150,18 @@ Page({
     return false
   },
   upadteBaomingDb(index){
-    //更新活动list表
     let joins = this.data.waitingList[index].joins
+    let acInfo = this.data.waitingList[index]
+    let _t = ''
+    for (let i = 0; i < acInfo.joins.length; i++){
+      _t += acInfo.joins[i].realName+','
+    }
+    if (acInfo.joins.length>0) _t+='已经报名成功了'
+    let shareTitle = '我报名' + acInfo.title + '了，快来参加吧。' + _t
+    this.setData({ shareTitle })
+    
+    //更新活动list表
+    
     joins.push({
       openid: app.globalData.openid,
       avatarUrl: app.globalData.userInfo.avatarUrl,
@@ -166,9 +179,9 @@ Page({
         updateTime: new Date().getTime(),
       }
     }
-    let acInfo = this.data.waitingList[index]
-    let shareTitle = '我报名' + acInfo.title + '了，快来参加吧。' + acInfo.joins.length + ' /' + (acInfo.joinNum*1+1)
+    
     console.log('updateActive',_data)
+    wx.showLoading({ title: '提交中…' })
     let _this = this
     wx.cloud.callFunction({
       // 云函数名称
@@ -178,7 +191,7 @@ Page({
       success(res) {
         console.log(res)
         _this.init()
-        _this.setData({shareTitle})
+        wx.hideLoading()
         Dialog.confirm({
           title: '标题',
           message: '报名成功，发送报名消息到群里吧',
@@ -196,7 +209,10 @@ Page({
         //   duration: 2000
         // })
       },
-      fail: console.error
+      fail:(err)=>{
+        wx.hideLoading()
+        console.log(err)
+      } 
     })
     //插入活动record表
     db.collection('record')
@@ -344,8 +360,15 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (shareMsg) {
+    if (shareMsg.from == 'menu'){
+      return {
+        title: '里边有好玩的活动，快来看看吧',
+        path: '/pages/index/index'
+      }
+    }
     return {
-      title: shareMsg || '里边有好玩的活动！'
+      title: this.data.shareTitle,
+      path: '/pages/index/index'
     }
   }
 })

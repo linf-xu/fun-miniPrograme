@@ -2,6 +2,9 @@
   "usingComponents": {
     "van-field": "../../ui/field/index",
     "van-cell": "../../ui/cell/index",
-    "van-icon": "../../ui/icon/index"
+    "van-icon": "../../ui/icon/index",
+    "van-button": "../../ui/button/index",
+    "van-divider": "../../ui/divider/index",
+    "van-popup": "../../ui/popup/index"
   }
 }

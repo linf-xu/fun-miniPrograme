@@ -18,19 +18,33 @@
 .userinfo{
   position: absolute;
   width: 750rpx;
-  top: 135rpx;
+  top: 100rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction:column;
+  justify-content: flex-start;
+  color: #fff;
+  padding-left: 30rpx;
   z-index: 3;
+}
+.userRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 150rpx;
+}
+.tab{
+  padding: 30rpx;
 }
 .mineBg{
   width: 750rpx;
   height: 360rpx;
 }
-.realname{
+.realName{
+  padding: 0 14px;
   justify-content: space-between;
+}
+.realName .van-icon{
+  margin-left: 30rpx;
 }
 .avatar{
   width: 170rpx;
@@ -40,9 +54,10 @@
 }
 .nickName{
   font-size: 40rpx;
-  color: #333;
+  color: #fff;
   letter-spacing: 2rpx;
   font-weight: bold;
+  display: inline-block;
 }
 .update{
   color: #44CBC2;
@@ -136,4 +151,18 @@
   width: 40rpx;
   margin-top: 15rpx;
   margin-bottom: 5rpx;
+}
+.popinner{
+  border-radius: 10px;
+  width: 500rpx;
+  display: block;
+  overflow: hidden;
+  padding-bottom: 30rpx;
+}
+.van-popup{
+  border-radius: 5px;
+  overflow: hidden;
+}
+.van-cell{
+  align-items: center
 }

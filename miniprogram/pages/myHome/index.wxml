@@ -3,18 +3,41 @@
 <view class="userWrap">
   <view class="bgBox">
     <image class="mineBg" src="../../../../../images/home/mineBg.png"/>
-    <image class="bBg" src="../../../../../images/home/bBg.png"/>
+    <!-- <image class="bBg" src="../../../../../images/home/bBg.png"/> -->
   </view>
+  <van-popup show="{{ edit }}">
+    <view class="popinner">
+      <van-divider contentPosition="center" >更新备注</van-divider>
+      <van-field
+        value="{{realName}}"
+        name="realName"
+        label="备注"
+        focus="{{edit}}"
+        placeholder="请填写您的姓名"
+        bindinput="inputgetName"
+        title-width="40px"
+        custom-style="background: transparent"
+        >
+          <van-button slot="button" bindtap='update' size="small" type="primary">确定</van-button>
+        </van-field>
+      </view>
+  </van-popup>
   <view class="userinfo">
     <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}"></image>
     <image wx:else class="avatar" src="../../../../../images/tabBar/mine.png"></image>
-    <button 
-      open-type="getUserInfo" 
-      bindgetuserinfo="getUserInfo"
-      class="nickName"
-    >{{nickName||'您还未登录，点击登录'}}</button>
-    
-    <view wx:if="{{nickName}}">
+    <view class="userRight">
+      <view class="nickName realName" wx:if="{{nickName}}">{{nickName}}</view>
+      <button
+        wx:else 
+        open-type="getUserInfo" 
+        bindgetuserinfo="getUserInfo"
+        class="nickName"
+      >您还未登录，点击登录</button>
+      <view bindtap='update' class="realName" wx:if="{{nickName}}">
+        备注：{{realName}}<van-icon name="edit"/>
+      </view>
+    </view>
+    <!-- <view wx:if="{{nickName}}">
       <van-field
         wx:if="{{edit}}"
         value="{{realName}}"
@@ -28,36 +51,32 @@
         use-button-slot
         custom-style="background: transparent"
         >
-        <!-- <van-icon name="edit"/> -->
         <van-button slot="button" size="small" type="primary"><van-icon bindtap='update' name="success" color="#44CBC2"/></van-button>
       </van-field>
       <view wx:else bindtap='update'>
         {{realName||"请填写您的姓名"}}<van-icon name="edit"/>
       </view>
-    </view>
+    </view> -->
   </view>
 </view>
-<view>
-{{leftImglist.lenght}}
-</view>
+<view class="tab">精彩图片</view>
 <view class="imglist">
   <view class="leftList">
     <image 
-      wx:for="{{leftImglist}}" 
+      wx:for="{{leftImgList}}" 
       wx:key="{{index}}" 
-      onload="onload" 
       mode='widthFix' 
       src="{{item.fileID}}" 
-      class="{{index==leftImglist.length-1?'leftLast image':'image'}}" >
+      class="{{index==leftImgList.length-1?'leftLast image':'image'}}" >
     </image>
   </view>
   <view class="rightList">
     <image  
-      wx:for="{{rightImglist}}" 
+      wx:for="{{rightImgList}}" 
       wx:key="{{index}}" 
       mode='widthFix' 
       src="{{item.fileID}}" 
-      class="{{index==rightImglist.length-1?'rightLast image':'image'}}">
+      class="{{index==rightImgList.length-1?'rightLast image':'image'}}">
     </image>
   </view>
 </view>

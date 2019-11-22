@@ -383,6 +383,18 @@ Page(Object.assign({
       },
     })
   },
+  // 查看地图
+  viewMap(e){
+    console.log(e)
+    // return
+    let latitude = e.currentTarget.dataset.latitude
+    let longitude = e.currentTarget.dataset.longitude
+    wx.openLocation({
+      latitude,
+      longitude,
+      scale: 18
+    })
+  },
   // 更新
   update(obj){
     console.log(obj)
@@ -393,15 +405,20 @@ Page(Object.assign({
           updateTime: new Date().getTime(),
         }, obj)
       }
+      wx.showLoading({ title: '提交中…' })
       wx.cloud.callFunction({
         // 云函数名称
         name: 'updateActive',
         // 传给云函数的参数
         data: _data,
         success(res) {
+          wx.hideLoading()
           rev()
         },
-        fail: console.error
+        fail:(err)=>{
+          wx.hideLoading()
+          this.console.log(err)
+        } 
       })
       // db.collection('activityList')
       //   .doc(this.data.id)

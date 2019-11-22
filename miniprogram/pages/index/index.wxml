@@ -6,7 +6,7 @@
     <button 
       class="login"
       open-type="getUserInfo" 
-      bindgetuserinfo="getUserInfo"> 
+      bindgetuserinfo="userLogin"> 
       登录 
     </button>
   </view>
@@ -41,12 +41,6 @@
 
     <!-- 进行中的活动 -->
     <view wx:for="{{waitingList}}" wx:key="{{index}}" class='cardWraper'>
-      <!-- <view class='cardHeader'>
-        
-        <text class='headerRight'><text class='joins'>{{item.joins.length}}</text><text>/{{item.joinNum}}</text>
-        </text>
-      </view> -->
-
       <view class='cardContent' bindtap='goDetail' data-id='{{item._id}}'>
         <view class="itemMainWrap">
           <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
@@ -100,6 +94,7 @@
           进行中...
         </view>
       </view>
+      <van-icon class="moremore" color="#999999" name="arrow"/>
     </view>
   </view>
   <!-- 往期活动 -->
@@ -168,6 +163,7 @@
           活动取消
         </view>
       </view>
+      <van-icon class="moremore" name="arrow"/>
     </view>
   </view>
   <view class="tabBarWrap">
