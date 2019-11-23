@@ -82,6 +82,13 @@ Page(Object.assign({
     console.log(this.data.imgList)
     // this.getImgList()
   },
+  previewImg(e) {
+    let src = e.currentTarget.dataset.src
+    wx.previewImage({
+      current: src, // 当前显示图片的http链接
+      urls: this.data.imgList // 需要预览的图片http链接列表
+    })
+  },
   getImgList(){
     const db = wx.cloud.database()
     // 查询 imgList
@@ -90,12 +97,14 @@ Page(Object.assign({
         console.log('获取图片列表成成功',res)
         try {
           let _list = res.data
+          let _imglist = []
           let _leftH = this.data.leftListH
           let _leftList = this.data.leftImgList||[]
           let _rightH = this.data.rightListH
           let _rightList = this.data.rightImgList||[]
           console.log(_leftH,_leftList,_rightH,_rightList)
           for(let i=0;i<_list.length;i++){
+            _imglist.push(_list[i].fileID)
             console.log(_leftH, _rightH)
             if(_leftH>_rightH){
               _rightList.push(_list[i])
@@ -111,7 +120,8 @@ Page(Object.assign({
             leftListH: _leftH,
             rightListH: _rightH,
             leftImgList: _leftList,
-            rightImgList: _rightList
+            rightImgList: _rightList,
+            imgList: _imglist
           })
         } catch (error) {
           console.log(error)

@@ -67,6 +67,8 @@
       wx:key="{{index}}" 
       mode='widthFix' 
       src="{{item.fileID}}" 
+      bindtap='previewImg'
+      data-src="{{ item.fileID }}"
       class="{{index==leftImgList.length-1?'leftLast image':'image'}}" >
     </image>
   </view>
@@ -76,6 +78,8 @@
       wx:key="{{index}}" 
       mode='widthFix' 
       src="{{item.fileID}}" 
+      bindtap='previewImg'
+      data-src="{{ item.fileID }}"
       class="{{index==rightImgList.length-1?'rightLast image':'image'}}">
     </image>
   </view>
