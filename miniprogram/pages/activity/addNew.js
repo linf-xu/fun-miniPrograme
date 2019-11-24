@@ -1,6 +1,8 @@
 
 // pages/newActivity.js
 var inputMixins = require("../../mixins/inputMixins.js")
+// const regeneratorRuntime = require('../../libs/regenerator-runtime/runtime')
+
 var app = getApp()
 const db = wx.cloud.database()
 Page(Object.assign({
@@ -149,7 +151,7 @@ Page(Object.assign({
     }
   },
   //新建活动
-  onAdd() {
+  async onAdd() {
     let addObj={
       createTime: new Date().getTime(),
       updateTime: new Date().getTime(),
@@ -176,6 +178,26 @@ Page(Object.assign({
       addObj.joinIds= app.globalData.openid
     }
     console.log(addObj)
+    let checkContent = JSON.stringify(this.data).replace(/[^\u4e00-\u9fa5|,]+/g, '')
+    console.log(checkContent)
+    let ckres = await wx.cloud.callFunction({
+      name: 'msgcheck',
+      data: {
+        content: checkContent
+      }
+    })
+    console.log(ckres)
+    //写审核通过之后的操作 if == 0
+    if (ckres.result.errCode == 0) {
+    } else {
+      wx.hideLoading();
+      wx.showModal({
+        title: '提醒',
+        content: '提交的信息中有敏感词，请注意言论',
+        showCancel: false
+      })
+      return
+    }
     //插入activitylist
     db.collection('activityList').add({
       data: Object.assign(addObj,this.data)
@@ -212,8 +234,6 @@ Page(Object.assign({
     if (this.data.isTemp){
       // 插入templist
       try{
-
-      
       db.collection('tempList')
         .add({
           data: {
