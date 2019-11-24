@@ -3,6 +3,7 @@
     "van-dialog": "../../ui/dialog/index",
     "van-button": "../../ui/button/index",
     "van-toast": "../../ui/toast/index",
+    "van-tag": "../../ui/tag/index",
     "van-icon": "../../ui/icon/index",
     "i-divider": "../../ui/divider/index",
     "i-spin": "../../ui/spin/index"

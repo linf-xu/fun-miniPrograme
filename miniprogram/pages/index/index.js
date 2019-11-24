@@ -95,6 +95,7 @@ Page({
           endList,
           pageLoading: false
         })
+        this.setData({currentItem:waitingList[0]})
         console.log('[数据库] [查询记录] 成功: ', res)
       },
       fail: err => {

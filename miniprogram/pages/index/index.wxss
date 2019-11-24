@@ -291,3 +291,11 @@ section{
   justify-content: center;
   align-items: center;
 }
+.van-tag{
+  margin: 15rpx 15rpx 0 0;
+}
+.tagwrap{
+  display: flex;
+  /* justify-content: space-around; */
+  flex-wrap: wrap;
+}

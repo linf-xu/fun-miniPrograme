@@ -40,16 +40,22 @@
               src="{{twodata.avatarUrl}}"/>
           </view>
         </view>
-        <view class="block"></view>
-        <!-- <text class="ml15">已报名</text> -->
-        <view 
+        <!-- <view class="block"></view> -->
+        <!-- <view 
           class='wait joinBtn' 
           data-index='{{index}}'
         >
           立即报名
-        </view>
+        </view> -->
       </view>
-      <van-icon class="moremore" color="#999999" name="arrow"/>
+      <view class="tagwrap">
+        <van-tag 
+          wx:for="{{currentItem.joins}}" 
+          wx:key="{{i}}" 
+          wx:for-item="jo" 
+          plain size="large" 
+          color="#44CBC2">{{jo.realName}}</van-tag>
+      </view>
     </view>
   </view>
   <!-- 登录框 -->
