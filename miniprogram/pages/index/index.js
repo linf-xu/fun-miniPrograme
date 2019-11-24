@@ -17,7 +17,9 @@ Page({
     addTop:'',
     activityTab:0,
     showTabBar:false,
-    shareTitle:''
+    showShareImg:false,
+    shareTitle:'',
+    currentItem:{}
   },
 
   /**
@@ -152,12 +154,10 @@ Page({
   upadteBaomingDb(index){
     let joins = this.data.waitingList[index].joins
     let acInfo = this.data.waitingList[index]
-    let _t = ''
-    for (let i = 0; i < acInfo.joins.length; i++){
-      _t += acInfo.joins[i].realName+','
-    }
-    if (acInfo.joins.length>0) _t+='已经报名成功了'
-    let shareTitle = '我报名' + acInfo.title + '了，快来参加吧。' + _t
+    
+    
+    let _t = acInfo.joins.length+1+'人已报名'
+    let shareTitle = '我报名了' + acInfo.title + '，快来参加吧。' + _t
     this.setData({ shareTitle })
     
     //更新活动list表
@@ -179,7 +179,7 @@ Page({
         updateTime: new Date().getTime(),
       }
     }
-    
+    this.setData({ currentItem: acInfo })
     console.log('updateActive',_data)
     wx.showLoading({ title: '提交中…' })
     let _this = this
@@ -199,9 +199,12 @@ Page({
           cancelButtonText:"偷偷报名",
           confirmButtonOpenType:"share"
         }).then(() => {
-          
+          _this.setData({ showShareImg: true })
+          setTimeout(()=>{
+            _this.setData({ showShareImg: false })
+          },1000)
         }).catch(() => {
-          // on cancel
+          _this.setData({ showShareImg: false })
         });
         // wx.showToast({
         //   title: '报名成功',

@@ -1,5 +1,57 @@
 <!--miniprogram/pages/guide.wxml-->
 <view class='container'>
+  <view class="showImg" hidden="{{!showShareImg}}">
+    <view class='cardWraper'>
+      <view class='cardContent'>
+        <view class="itemMainWrap">
+          <image class="itemMain" src="../../../../../images/home/itemMain.png"/>
+          <text>{{currentItem.joins.length}}/{{currentItem.joinNum}}</text>
+        </view>
+        <view class='contentRight'>
+          <view class='title'>{{currentItem.title}}</view>
+          <view>
+            <image src="../../../../../images/home/item_1.png"/>
+            <text>{{currentItem.startTime}} </text> <van-icon name="exchange"/> {{currentItem.endTime}}
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_2.png"/>
+            <text>{{currentItem.address}} </text>
+          </view>
+          <view>
+            <image src="../../../../../images/home/item_3.png"/>
+            <text>{{currentItem.playmaker.nickName}}({{currentItem.playmaker.realName}}) </text>
+          </view>
+          <!-- <view catchtap='viewMap' data-latitude='{{item.latitude}}' data-longitude='{{item.longitude}}'>
+            活动地点:<van-icon color="#576b95" class='ml15' name="map-marked"/> <text class='address'>{{item.address}}</text>
+          </view> -->
+        </view>
+        
+      </view>
+      <view wx:if="{{currentItem.remarks}}" class='cardBottom'>{{currentItem.remarks}}</view>
+      <view class='joinsList van-hairline--top'>
+        <text>已报名:</text>
+        <view class='avatarWraper'>
+          <view>
+            <image 
+              wx:for="{{currentItem.joins}}" 
+              wx:key="{{i}}" 
+              wx:for-item="twodata" 
+              class='avatar' 
+              src="{{twodata.avatarUrl}}"/>
+          </view>
+        </view>
+        <view class="block"></view>
+        <!-- <text class="ml15">已报名</text> -->
+        <view 
+          class='wait joinBtn' 
+          data-index='{{index}}'
+        >
+          立即报名
+        </view>
+      </view>
+      <van-icon class="moremore" color="#999999" name="arrow"/>
+    </view>
+  </view>
   <!-- 登录框 -->
   <view wx:if="{{!nickName}}" class="loginBox">
     <text>您还未登录，请先</text>
